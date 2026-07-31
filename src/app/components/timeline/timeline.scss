@@ -1,0 +1,330 @@
+@use '../../../styles/tokens' as *;
+
+// ─────────────────────────────────────────
+// Timeline wrapper
+// ─────────────────────────────────────────
+.tl {
+  padding: $space-8 $space-8 $space-12;
+  position: relative;
+
+  &__inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  &__spine {
+    position: absolute;
+    top: 24px;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--spine-color) 6%,
+      var(--spine-color) 94%,
+      transparent 100%
+    );
+    pointer-events: none;
+    transition: background 0.35s ease;
+  }
+}
+
+// ─────────────────────────────────────────
+// Row
+// ─────────────────────────────────────────
+.tl-row {
+  display: grid;
+  grid-template-columns: 1fr 52px 1fr;
+  align-items: start;
+  margin-bottom: 120px;
+
+  opacity: 0;
+  transition:
+    opacity   0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &--left  { transform: translateX(-90px); }
+  &--right { transform: translateX(90px); }
+
+  &--visible {
+    opacity: 1;
+    transform: translateX(0) !important;
+  }
+
+  // Centre dot
+  &__dot-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 14px;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: $color-primary;
+    border: 3px solid var(--dot-border);
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.35s ease;
+  }
+
+  &:hover &__dot {
+    transform: scale(1.5);
+    box-shadow: 0 0 0 5px rgba($color-primary, 0.18);
+  }
+
+  // Meta
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 4px;
+  }
+
+  &__year {
+    font-family: $font-headline;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: $weight-extrabold;
+    line-height: 1;
+    color: var(--year-color);
+    user-select: none;
+    transition: color 0.35s ease;
+  }
+
+  &__role {
+    font-family: $font-headline;
+    font-size: $text-lg;
+    font-weight: $weight-bold;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.35s ease;
+  }
+
+  &__company {
+    font-family: $font-label;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-tertiary;
+  }
+
+  // Cards column
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+    padding-top: 2px;
+  }
+
+  // LEFT: meta right side, cards left side
+  &--left {
+    .tl-row__meta      { grid-column: 3; grid-row: 1; padding-left: $space-6; text-align: left; }
+    .tl-row__dot-wrap  { grid-column: 2; grid-row: 1; }
+    .tl-row__cards     { grid-column: 1; grid-row: 1; padding-right: $space-6; }
+  }
+
+  // RIGHT: meta left side, cards right side
+  &--right {
+    .tl-row__meta      { grid-column: 1; grid-row: 1; padding-right: $space-6; text-align: right; }
+    .tl-row__dot-wrap  { grid-column: 2; grid-row: 1; }
+    .tl-row__cards     { grid-column: 3; grid-row: 1; padding-left: $space-6; }
+  }
+}
+
+// ─────────────────────────────────────────
+// Card + Accordion
+// ─────────────────────────────────────────
+.tl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: $radius-xl;
+  box-shadow: var(--card-shadow);
+  transition:
+    background     0.35s ease,
+    border-color   0.25s ease,
+    box-shadow     0.25s ease;
+
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--border-hover);
+  }
+
+  // Header
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+    padding: $space-4;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: $radius-xl;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: $text-base;
+    font-weight: $weight-semibold;
+    color: var(--text-primary);
+    flex: 1;
+    line-height: 1.4;
+    transition: color 0.35s ease;
+  }
+
+  &__chevron {
+    width: 18px;
+    height: 18px;
+    color: $color-primary;
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Accordion wrapper — grid-rows trick
+  &__body-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  // Inner body
+  &__body {
+    overflow: hidden;
+    padding: 0 $space-4;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity   0.3s ease 0.05s,
+      transform 0.35s ease 0.05s,
+      padding   0.42s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: $space-4;
+    transition: color 0.35s ease;
+  }
+
+  &__tech-label {
+    font-family: $font-label;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: $space-2;
+    transition: color 0.35s ease;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-bottom: $space-4;
+  }
+
+  &__tag {
+    font-family: $font-label;
+    font-size: 0.7rem;
+    font-weight: $weight-medium;
+    color: $color-primary;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-full;
+    padding: 3px 10px;
+    transition: background 0.35s ease, border-color 0.35s ease;
+  }
+
+  &__detail {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    padding-top: $space-3;
+    margin-bottom: $space-4;
+    border-top: 1px solid var(--border);
+    transition: color 0.35s ease, border-color 0.35s ease;
+  }
+
+  &__cta {
+    display: block;
+    width: 100%;
+    margin-bottom: $space-4;
+    padding: $space-3 $space-4;
+    font-family: $font-body;
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    color: $color-primary;
+    background: var(--tag-bg);
+    border: 1.5px solid var(--border);
+    border-radius: $radius-lg;
+    cursor: pointer;
+    text-align: center;
+    transition:
+      background    0.2s ease,
+      border-color  0.2s ease,
+      transform     0.15s ease;
+
+    &:hover {
+      background: rgba($color-primary, 0.14);
+      border-color: $color-primary;
+      transform: translateY(-1px);
+    }
+  }
+
+  // ── OPEN state ─────────────────────
+  &--open {
+    border-color: var(--border-hover);
+    box-shadow: var(--card-shadow-hover);
+
+    .tl-card__chevron      { transform: rotate(180deg); }
+    .tl-card__body-wrap    { grid-template-rows: 1fr; }
+
+    .tl-card__body {
+      opacity: 1;
+      transform: translateY(0);
+      padding-top: $space-1;
+      padding-bottom: $space-2;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// Footer
+// ─────────────────────────────────────────
+app-footer .footer {
+  background: var(--surface);
+  border-top-color: var(--border);
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+// ─────────────────────────────────────────
+// Mobile
+// ─────────────────────────────────────────
+@media (max-width: 680px) {
+  .tl__spine { display: none; }
+
+  .tl-row {
+    grid-template-columns: 1fr;
+
+    &--left,
+    &--right {
+      .tl-row__meta     { grid-column: 1; grid-row: 1; text-align: left; padding: 0 0 $space-3; }
+      .tl-row__dot-wrap { display: none; }
+      .tl-row__cards    { grid-column: 1; grid-row: 2; padding: 0; }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+@use '../../../styles/tokens' as *;
+
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: $space-6 $space-8;
+  transition: background 0.35s ease, border-color 0.35s ease;
+
+  &__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-4;
+  }
+
+  &__logo {
+    font-family: $font-headline;
+    font-size: $text-lg;
+    font-weight: $weight-bold;
+    color: $color-primary;
+    text-decoration: none;
+  }
+
+  &__copy {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-muted);
+    transition: color 0.35s ease;
+  }
+
+  &__links {
+    display: flex;
+    gap: $space-6;
+  }
+
+  &__link {
+    font-family: $font-body;
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    &:hover { color: $color-primary; }
+  }
+}

@@ -1,0 +1,157 @@
+<section class="stack" id="stack">
+
+  <!-- Header -->
+  <div class="stack__header">
+    <span class="stack__pre-label">TECHNICAL EXPERTISE</span>
+    <h2 class="stack__title">
+      The Architectural <span class="stack__title-accent">Stack</span>
+    </h2>
+    <p class="stack__subtitle">
+      From robotics competitions to production apps — my journey across different tech domains.
+    </p>
+  </div>
+
+  <!-- Grid -->
+  <div class="stack__grid">
+
+    <!-- Large card: Flutter (col-span 2) -->
+    <div class="stack-card stack-card--large"
+         [class.stack-card--visible]="isVisible(0)"
+         [style.--accent]="cards[0].accentColor"
+         #stackCard>
+      <div class="stack-card__glow"></div>
+      <div class="stack-card__inner">
+        <div class="stack-card__head">
+          <div class="stack-card__icon" [style.background]="cards[0].iconBg">{{ cards[0].icon }}</div>
+          <div class="stack-card__head-text">
+            <div class="stack-card__domain-row">
+              <span class="stack-card__domain" [style.color]="cards[0].accentColor"
+                    [style.background]="cards[0].accentColor + '14'"
+                    [style.border-color]="cards[0].accentColor + '30'">
+                {{ cards[0].domain }}
+              </span>
+              <span class="stack-card__period">{{ cards[0].period }}</span>
+            </div>
+            <h3 class="stack-card__title">{{ cards[0].headline }}</h3>
+          </div>
+        </div>
+        <p class="stack-card__desc">{{ cards[0].description }}</p>
+
+        <!-- Skills with level bars -->
+        <div class="stack-card__skills">
+          <div *ngFor="let s of cards[0].skills" class="stack-card__skill">
+            <div class="stack-card__skill-top">
+              <span class="stack-card__skill-name">{{ s.name }}</span>
+              <span class="stack-card__skill-level" [class]="'stack-card__skill-level--' + s.level">
+                {{ levelLabel[s.level] }}
+              </span>
+            </div>
+            <div class="stack-card__skill-bar">
+              <div class="stack-card__skill-fill"
+                   [style.width]="levelWidth[s.level]"
+                   [style.background]="cards[0].accentColor"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="stack-card__projects">
+          <span class="stack-card__projects-label">Applied in</span>
+          <span *ngFor="let p of cards[0].projects" class="stack-card__project-chip"
+                [style.color]="cards[0].accentColor"
+                [style.border-color]="cards[0].accentColor + '40'">
+            {{ p }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medium cards: Angular, Robotics, Backend -->
+    <ng-container *ngFor="let card of cards.slice(1, 4); let i = index">
+      <div class="stack-card stack-card--medium"
+           [class.stack-card--visible]="isVisible(i + 1)"
+           [style.--accent]="card.accentColor"
+           #stackCard>
+        <div class="stack-card__glow"></div>
+        <div class="stack-card__inner">
+          <div class="stack-card__head stack-card__head--compact">
+            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">{{ card.icon }}</div>
+            <div>
+              <span class="stack-card__domain" [style.color]="card.accentColor"
+                    [style.background]="card.accentColor + '14'"
+                    [style.border-color]="card.accentColor + '30'">
+                {{ card.domain }}
+              </span>
+              <h3 class="stack-card__title stack-card__title--md">{{ card.headline }}</h3>
+            </div>
+          </div>
+          <p class="stack-card__desc stack-card__desc--sm">{{ card.description }}</p>
+
+          <!-- Highlights -->
+          <ul class="stack-card__highlights">
+            <li *ngFor="let h of card.highlights">
+              <span class="stack-card__hl-dot" [style.background]="card.accentColor"></span>
+              {{ h }}
+            </li>
+          </ul>
+
+          <!-- Skills as chips -->
+          <div class="stack-card__skill-chips">
+            <span *ngFor="let s of card.skills" class="stack-card__chip"
+                  [class]="'stack-card__chip--' + s.level"
+                  [style.--c]="card.accentColor">
+              {{ s.name }}
+            </span>
+          </div>
+
+          <div class="stack-card__projects">
+            <span class="stack-card__projects-label">Applied in</span>
+            <span *ngFor="let p of card.projects" class="stack-card__project-chip"
+                  [style.color]="card.accentColor"
+                  [style.border-color]="card.accentColor + '40'">
+              {{ p }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Small cards: ML, Biomedical, DevTools -->
+    <ng-container *ngFor="let card of cards.slice(4); let i = index">
+      <div class="stack-card stack-card--small"
+           [class.stack-card--visible]="isVisible(i + 4)"
+           [style.--accent]="card.accentColor"
+           #stackCard>
+        <div class="stack-card__glow"></div>
+        <div class="stack-card__inner">
+          <div class="stack-card__head stack-card__head--compact">
+            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">{{ card.icon }}</div>
+            <div>
+              <span class="stack-card__domain" [style.color]="card.accentColor"
+                    [style.background]="card.accentColor + '14'"
+                    [style.border-color]="card.accentColor + '30'">
+                {{ card.domain }}
+              </span>
+              <h3 class="stack-card__title stack-card__title--sm">{{ card.headline }}</h3>
+            </div>
+          </div>
+          <div class="stack-card__skill-chips">
+            <span *ngFor="let s of card.skills" class="stack-card__chip"
+                  [class]="'stack-card__chip--' + s.level"
+                  [style.--c]="card.accentColor">
+              {{ s.name }}
+            </span>
+          </div>
+          <ul class="stack-card__highlights stack-card__highlights--sm">
+            <li *ngFor="let h of card.highlights">
+              <span class="stack-card__hl-dot" [style.background]="card.accentColor"></span>
+              {{ h }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
+
+  </div><!-- /grid -->
+
+</section>

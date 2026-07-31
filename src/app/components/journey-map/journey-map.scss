@@ -1,0 +1,457 @@
+@use '../../../styles/tokens' as *;
+
+// ─────────────────────────────────────────
+.jmap {
+  width: 100%;
+
+  // ── Top bar ───────────────────────────
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-3;
+    margin-bottom: $space-4;
+    padding: 0 $space-2;
+  }
+
+  &__topbar-left {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  &__badge {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-bold;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $color-primary;
+    background: rgba($color-primary, 0.09);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: $radius-full;
+    padding: 3px 10px;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: $text-lg;
+    font-weight: $weight-bold;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__hint {
+    font-family: $font-body;
+    font-size: $text-xs;
+    color: var(--text-muted);
+
+    strong { color: $color-primary; }
+    &--done { color: $color-primary; font-weight: $weight-semibold; }
+  }
+
+  // ── Outer wrapper for canvas + info panel ──
+  &__layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 0;
+  }
+
+  // ── Canvas ────────────────────────────
+  &__canvas {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: $radius-xl $radius-xl 0 0;
+    overflow: hidden;   // keep grid/glow clipped
+    cursor: none;
+    user-select: none;
+    box-shadow: inset 0 0 80px rgba($color-primary, 0.03);
+    transition: border-color 0.3s ease;
+
+    &:hover { border-color: rgba($color-primary, 0.25); }
+  }
+
+  // ── Info panel (below canvas) ─────────
+  &__info-panel {
+    min-height: 160px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 $radius-xl $radius-xl;
+    padding: $space-4 $space-6;
+    transition: background 0.35s ease, border-color 0.35s ease;
+    display: flex;
+    align-items: stretch;
+    gap: $space-6;
+    box-shadow: var(--card-shadow);
+  }
+
+  &__info-empty {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    gap: $space-2;
+
+    &-icon { font-size: 1.1rem; opacity: 0.5; }
+  }
+
+  &__info-content {
+    display: flex;
+    gap: $space-6;
+    width: 100%;
+    align-items: flex-start;
+    animation: slideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  &__info-icon-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2;
+    flex-shrink: 0;
+  }
+
+  &__info-icon {
+    width: 56px; height: 56px;
+    border-radius: $radius-lg;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    transition: background 0.3s ease;
+  }
+
+  &__info-year-badge {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-semibold;
+    color: $color-primary;
+    background: rgba($color-primary, 0.08);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: $radius-full;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  &__info-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__info-role {
+    font-family: $font-headline;
+    font-size: $text-lg;
+    font-weight: $weight-bold;
+    color: var(--text-primary);
+    margin: 0 0 2px;
+    transition: color 0.35s ease;
+  }
+
+  &__info-place {
+    font-family: $font-label;
+    font-size: $text-xs;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: $space-3;
+    transition: color 0.35s ease;
+  }
+
+  &__info-story {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: $space-3;
+    transition: color 0.35s ease;
+    // Make sure full text is always visible — no truncation
+    overflow: visible;
+    white-space: normal;
+    word-break: normal;
+  }
+
+  &__info-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+
+  &__info-skill {
+    font-family: $font-label;
+    font-size: 0.65rem;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.05em;
+    border: 1px solid;
+    border-radius: $radius-full;
+    padding: 3px 10px;
+    background: transparent;
+  }
+
+  // ── Grid ─────────────────────────────
+  &__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($color-primary, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($color-primary, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  // ── Ambient glow ──────────────────────
+  &__ambient {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+
+    &--1 {
+      width: 260px; height: 180px;
+      top: -40px; left: 5%;
+      background: radial-gradient(ellipse, rgba($color-primary, 0.08), transparent 70%);
+    }
+    &--2 {
+      width: 220px; height: 160px;
+      bottom: -30px; right: 10%;
+      background: radial-gradient(ellipse, rgba($color-tertiary, 0.07), transparent 70%);
+    }
+  }
+
+  // ── SVG overlay ───────────────────────
+  &__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  &__path {
+    fill: none;
+    stroke: rgba($color-primary, 0.15);
+    stroke-width: 0.6;
+    stroke-dasharray: 2.5 2.5;
+    stroke-linecap: round;
+    transition: stroke 0.5s ease, stroke-width 0.5s ease;
+
+    &--lit {
+      stroke: rgba($color-primary, 0.5);
+      stroke-width: 0.8;
+      animation: dashFlow 2s linear infinite;
+    }
+  }
+
+  &__trail-line {
+    fill: none;
+    stroke: rgba($color-primary, 0.18);
+    stroke-width: 0.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  // ── Stations ──────────────────────────
+  &__station {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  &__platform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: var(--surface-raised, var(--surface));
+    border: 1.5px solid var(--border);
+    border-radius: $radius-lg;
+    padding: $space-3 $space-4;
+    min-width: 76px;
+    position: relative;
+    cursor: default;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+
+    .jmap__station--active & {
+      border-color: var(--accent, #{$color-primary});
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.14),
+                  0 8px 24px rgba(0,0,0,0.1);
+      transform: translate(0, -3px);
+    }
+  }
+
+  &__platform-icon {
+    width: 40px; height: 40px;
+    border-radius: $radius-md;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+
+    .jmap__station--active & { transform: scale(1.18) rotate(-6deg); }
+  }
+
+  &__platform-label {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-bold;
+    letter-spacing: 0.1em;
+    color: var(--accent, #{$color-primary});
+  }
+
+  &__platform-year {
+    font-family: $font-label;
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  &__visited-ring {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 16px; height: 16px;
+    background: var(--surface);
+    border-radius: 50%;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    svg { width: 100%; height: 100%; }
+  }
+
+  // ── Character ─────────────────────────
+  &__char {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+
+    &--flip { transform: translate(-50%, -100%) scaleX(-1); }
+  }
+
+  &__char-svg {
+    width: 44px; height: auto;
+    image-rendering: pixelated;
+    shape-rendering: crispEdges;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
+  }
+
+  &__char-walk {
+    animation: charBob 0.32s ease-in-out;
+  }
+
+  &__char-shadow {
+    position: absolute;
+    bottom: 2px; left: 50%;
+    transform: translateX(-50%);
+    width: 24px; height: 5px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.1);
+    filter: blur(3px);
+    z-index: -1;
+  }
+
+  &__char-name {
+    font-family: $font-label;
+    font-size: 0.55rem;
+    font-weight: $weight-bold;
+    color: $color-primary;
+    background: var(--surface);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: $radius-full;
+    padding: 1px 7px;
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba($color-primary, 0.12);
+  }
+
+  // ── HUD ───────────────────────────────
+  &__hud {
+    position: absolute;
+    bottom: $space-3; left: $space-4;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    pointer-events: none;
+  }
+
+  &__hud-icon {
+    font-size: 0.7rem;
+    color: $color-primary;
+    opacity: 0.6;
+  }
+
+  &__hud-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: rgba($color-primary, 0.65);
+    letter-spacing: 0.04em;
+  }
+
+  &__hud-dots {
+    display: flex;
+    gap: 4px;
+    margin-left: $space-1;
+  }
+
+  &__hud-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba($color-primary, 0.2);
+    transition: background 0.4s ease, transform 0.3s ease;
+
+    &--done {
+      background: var(--c, #{$color-primary});
+      transform: scale(1.2);
+    }
+  }
+
+  // ── Keyboard hint ─────────────────────
+  &__keyhint {
+    position: absolute;
+    bottom: $space-3; right: $space-4;
+    display: flex;
+    gap: 3px;
+    pointer-events: none;
+
+    kbd {
+      font-family: $font-label;
+      font-size: 0.6rem;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 5px;
+      color: var(--text-muted);
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// Keyframes
+// ─────────────────────────────────────────
+@keyframes dashFlow {
+  to { stroke-dashoffset: -10; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes charBob {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

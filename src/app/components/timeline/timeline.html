@@ -1,0 +1,75 @@
+<section
+  class="tl"
+  id="timeline"
+  [style.opacity]="sectionOpacity()"
+  [style.transform]="'scale(' + sectionScale() + ')'"
+  [style.will-change]="'opacity, transform'"
+>
+  <div class="tl__inner">
+
+    <div class="tl__spine"></div>
+
+    <div
+      *ngFor="let item of timeline; let i = index"
+      class="tl-row"
+      [class.tl-row--left]="item.side === 'left'"
+      [class.tl-row--right]="item.side === 'right'"
+      [class.tl-row--visible]="isVisible(i)"
+      #tlRow
+    >
+
+      <!-- Meta info -->
+      <div class="tl-row__meta">
+        <span class="tl-row__year">{{ item.year }}</span>
+        <h3 class="tl-row__role">{{ item.role }}</h3>
+        <span class="tl-row__company">{{ item.company }}</span>
+      </div>
+
+      <!-- Centre dot -->
+      <div class="tl-row__dot-wrap">
+        <div class="tl-row__dot"></div>
+      </div>
+
+      <!-- Cards -->
+      <div class="tl-row__cards">
+        <div
+          *ngFor="let card of item.cards"
+          class="tl-card"
+          [class.tl-card--open]="isOpen(card.id)"
+        >
+          <!-- Accordion header -->
+          <button
+            class="tl-card__header"
+            (click)="toggle(card.id)"
+            [attr.aria-expanded]="isOpen(card.id)"
+          >
+            <span class="tl-card__title">{{ card.title }}</span>
+            <svg class="tl-card__chevron" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <!-- Accordion body (grid-rows trick) -->
+          <div class="tl-card__body-wrap">
+            <div class="tl-card__body">
+              <p class="tl-card__desc">{{ card.description }}</p>
+
+              <p class="tl-card__tech-label">Core Tech Stack</p>
+              <div class="tl-card__tags">
+                <span *ngFor="let t of card.tech" class="tl-card__tag">{{ t }}</span>
+              </div>
+
+              <p class="tl-card__detail">{{ card.detail }}</p>
+
+              <button class="tl-card__cta">View Case Study</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tl-row -->
+
+  </div>
+</section>

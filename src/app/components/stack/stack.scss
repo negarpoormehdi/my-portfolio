@@ -1,0 +1,401 @@
+@use '../../../styles/tokens' as *;
+
+// ─────────────────────────────────────────
+.stack {
+  padding: $space-8 $space-8 $space-12;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  &__header {
+    margin-bottom: $space-8;
+  }
+
+  &__pre-label {
+    display: inline-block;
+    font-family: $font-label;
+    font-size: 0.62rem;
+    font-weight: $weight-bold;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-primary;
+    background: rgba($color-primary, 0.08);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: $radius-full;
+    padding: 4px 12px;
+    margin-bottom: $space-3;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: $weight-extrabold;
+    color: var(--text-primary);
+    letter-spacing: -0.6px;
+    margin-bottom: $space-3;
+    transition: color 0.35s ease;
+  }
+
+  &__title-accent { color: $color-primary; }
+
+  &__subtitle {
+    font-family: $font-body;
+    font-size: $text-base;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 580px;
+    transition: color 0.35s ease;
+  }
+
+  // ── Grid layout ───────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: $space-4;
+
+    // Large card spans first 2 columns
+    .stack-card--large  { grid-column: span 2; }
+    .stack-card--medium { grid-column: span 1; }
+    .stack-card--small  { grid-column: span 1; }
+  }
+}
+
+// ─────────────────────────────────────────
+// Card base
+// ─────────────────────────────────────────
+.stack-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition:
+    opacity    0.6s cubic-bezier(0.22,1,0.36,1),
+    transform  0.6s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+
+  // Scroll-in — start hidden
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  // Stagger
+  &:nth-child(1) { transition-delay: 0ms; }
+  &:nth-child(2) { transition-delay: 80ms; }
+  &:nth-child(3) { transition-delay: 140ms; }
+  &:nth-child(4) { transition-delay: 60ms; }
+  &:nth-child(5) { transition-delay: 100ms; }
+  &:nth-child(6) { transition-delay: 160ms; }
+  &:nth-child(7) { transition-delay: 80ms; }
+
+  // Hover
+  &:hover {
+    border-color: rgba(var(--accent-raw, 109,94,247), 0.28);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-4px) scale(1.005);
+
+    .stack-card__glow { opacity: 1; transform: scale(1.3); }
+    .stack-card__icon { transform: scale(1.1) rotate(-4deg); }
+  }
+
+  // Accent left bar
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent, #{$color-primary});
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  &:hover::before { opacity: 1; }
+
+  // Hover glow
+  &__glow {
+    position: absolute;
+    width: 220px; height: 220px;
+    top: -30px; left: 30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($color-primary, 0.1), transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.5s ease;
+    filter: blur(24px);
+    z-index: 0;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    padding: $space-6;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+  }
+
+  // ── Head ────────────────────────────
+  &__head {
+    display: flex;
+    gap: $space-4;
+    align-items: flex-start;
+
+    &--compact {
+      gap: $space-3;
+      align-items: flex-start;
+    }
+  }
+
+  &__head-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__icon {
+    width: 52px; height: 52px;
+    border-radius: $radius-lg;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+
+    &--sm {
+      width: 38px; height: 38px;
+      font-size: 1.1rem;
+      border-radius: $radius-md;
+      margin-top: 2px;
+    }
+  }
+
+  &__domain-row {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    margin-bottom: $space-2;
+  }
+
+  &__domain {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+    border-radius: $radius-full;
+    padding: 2px 9px;
+  }
+
+  &__period {
+    font-family: $font-label;
+    font-size: $text-xs;
+    color: var(--text-muted);
+    transition: color 0.35s ease;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: $text-xl;
+    font-weight: $weight-bold;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.35s ease;
+
+    &--md { font-size: $text-lg; }
+    &--sm { font-size: $text-base; }
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    transition: color 0.35s ease;
+    margin: 0;
+
+    &--sm { font-size: $text-xs; line-height: 1.7; }
+  }
+
+  // ── Skill bars (large card) ──────────
+  &__skills {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  &__skill { display: flex; flex-direction: column; gap: 4px; }
+
+  &__skill-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__skill-name {
+    font-family: $font-body;
+    font-size: $text-xs;
+    color: var(--text-secondary);
+    transition: color 0.35s ease;
+  }
+
+  &__skill-level {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.05em;
+    border-radius: $radius-full;
+    padding: 1px 7px;
+
+    &--expert {
+      color: $color-primary;
+      background: rgba($color-primary, 0.1);
+    }
+    &--proficient {
+      color: $color-secondary;
+      background: rgba($color-secondary, 0.08);
+    }
+    &--familiar {
+      color: var(--text-muted);
+      background: var(--tag-bg);
+    }
+  }
+
+  &__skill-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__skill-fill {
+    height: 100%;
+    border-radius: 2px;
+    opacity: 0.75;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.3s;
+
+    .stack-card:not(.stack-card--visible) & { width: 0 !important; }
+  }
+
+  // ── Skill chips (medium/small) ───────
+  &__skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-1;
+  }
+
+  &__chip {
+    font-family: $font-label;
+    font-size: 0.62rem;
+    font-weight: $weight-medium;
+    border-radius: $radius-full;
+    padding: 3px 9px;
+    transition: background 0.2s ease;
+
+    &--expert {
+      color: var(--c, #{$color-primary});
+      background: color-mix(in srgb, var(--c, #{$color-primary}) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c, #{$color-primary}) 25%, transparent);
+    }
+    &--proficient {
+      color: var(--c, #{$color-primary});
+      background: color-mix(in srgb, var(--c, #{$color-primary}) 6%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c, #{$color-primary}) 18%, transparent);
+      opacity: 0.85;
+    }
+    &--familiar {
+      color: var(--text-muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+    }
+  }
+
+  // ── Highlights ───────────────────────
+  &__highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: $space-2;
+      font-family: $font-body;
+      font-size: $text-xs;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      transition: color 0.35s ease;
+    }
+
+    &--sm li { font-size: 0.68rem; }
+  }
+
+  &__hl-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  // ── Projects ─────────────────────────
+  &__projects {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-top: auto;
+    padding-top: $space-3;
+    border-top: 1px solid var(--border);
+  }
+
+  &__projects-label {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.35s ease;
+  }
+
+  &__project-chip {
+    font-family: $font-label;
+    font-size: 0.62rem;
+    font-weight: $weight-semibold;
+    border: 1px solid;
+    border-radius: $radius-full;
+    padding: 2px 9px;
+    letter-spacing: 0.03em;
+    background: transparent;
+    transition: background 0.2s ease;
+
+    &:hover { background: rgba(0,0,0,0.04); }
+  }
+}
+
+// ─────────────────────────────────────────
+// Responsive
+// ─────────────────────────────────────────
+@media (max-width: 900px) {
+  .stack__grid {
+    grid-template-columns: repeat(2, 1fr);
+    .stack-card--large { grid-column: span 2; }
+  }
+}
+
+@media (max-width: 600px) {
+  .stack__grid {
+    grid-template-columns: 1fr;
+    .stack-card--large,
+    .stack-card--medium,
+    .stack-card--small { grid-column: span 1; }
+  }
+}

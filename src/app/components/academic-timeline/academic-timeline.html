@@ -1,0 +1,137 @@
+<section class="atl" id="timeline">
+
+  <!-- ── Section header ── -->
+  <div class="atl__header">
+    <span class="atl__pre-label">CAREER NARRATIVE</span>
+    <h2 class="atl__title">
+      From <span class="atl__accent">Engineering</span> to
+      <span class="atl__accent2">Intelligence</span>
+    </h2>
+    <p class="atl__subtitle">
+      A technical journey across biomedical engineering, competitive robotics,
+      professional software development, and machine learning — converging toward
+      intelligent systems.
+    </p>
+    <!-- Journey arc -->
+    <div class="atl__arc">
+      <span *ngFor="let node of ['Problem Solving','Biomedical Eng.','Robotics','Programming','Software Eng.','Mobile & Web','Machine Learning','AI']; let last = last"
+            class="atl__arc-node">
+        {{ node }}<span *ngIf="!last" class="atl__arc-arrow">→</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Timeline body ── -->
+  <div class="atl__body">
+    <!-- Spine -->
+    <div class="atl__spine"></div>
+
+    <!-- Entries -->
+    <div
+      *ngFor="let entry of entries; let i = index"
+      class="atl__entry"
+      [class.atl__entry--left]="entry.side === 'left'"
+      [class.atl__entry--right]="entry.side === 'right'"
+      [class.atl__entry--visible]="isVisible(i)"
+      [style.transition-delay]="(i % 2 * 80) + 'ms'"
+      #tlEntry
+    >
+
+      <!-- Period bubble on spine -->
+      <div class="atl__period-wrap">
+        <div class="atl__period-dot" [style.border-color]="entry.categoryColor">
+          <span class="atl__period-year">{{ entry.period }}</span>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="atl__card" [style.--accent]="entry.categoryColor">
+        <!-- Top bar -->
+        <div class="atl__card-top">
+          <span class="atl__category" [style.color]="entry.categoryColor"
+                [style.background]="entry.categoryColor + '14'"
+                [style.border-color]="entry.categoryColor + '30'">
+            {{ entry.category }}
+          </span>
+          <span class="atl__period-inline">{{ entry.period }}</span>
+        </div>
+
+        <!-- Headline -->
+        <h3 class="atl__card-headline">{{ entry.headline }}</h3>
+
+        <!-- Description -->
+        <p class="atl__card-desc">{{ entry.description }}</p>
+
+        <!-- Highlights -->
+        <ul class="atl__highlights" *ngIf="entry.highlights?.length">
+          <li *ngFor="let h of entry.highlights" class="atl__highlight-item">
+            <span class="atl__highlight-dot" [style.background]="entry.categoryColor"></span>
+            {{ h }}
+          </li>
+        </ul>
+
+        <!-- Tags -->
+        <div class="atl__tags">
+          <span
+            *ngFor="let tag of entry.tags"
+            class="atl__tag"
+            [class]="'atl__tag--' + tag.type"
+            [style.border-color]="tag.type === 'achievement' ? entry.categoryColor + '66' : ''"
+            [style.color]="tag.type === 'achievement' ? entry.categoryColor : ''"
+          >
+            <span *ngIf="tag.type === 'achievement'">✦ </span>{{ tag.label }}
+          </span>
+        </div>
+
+        <!-- Image gallery -->
+        <div *ngIf="entry.images?.length" class="atl__gallery">
+          <div class="atl__gallery-track">
+            <img *ngFor="let img of entry.images" [src]="img" [alt]="entry.headline" class="atl__gallery-img" loading="lazy" (click)="openLightbox(img)">
+          </div>
+        </div>
+
+        <!-- Expandable system diagram -->
+        <div *ngIf="entry.system?.length">
+          <button class="atl__expand-btn" (click)="toggleExpand(entry.id)"
+                  [style.color]="entry.categoryColor">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline [attr.points]="isExpanded(entry.id) ? '3,10 8,5 13,10' : '3,6 8,11 13,6'"/>
+            </svg>
+            {{ isExpanded(entry.id) ? 'Hide' : 'View' }} system architecture
+          </button>
+
+          <div class="atl__system" [class.atl__system--open]="isExpanded(entry.id)">
+            <div class="atl__system-inner">
+              <div *ngFor="let group of entry.system" class="atl__sys-group">
+                <h5 class="atl__sys-group-title" [style.color]="entry.categoryColor">
+                  {{ group.label }}
+                </h5>
+                <ul class="atl__sys-items">
+                  <li *ngFor="let item of group.items">{{ item }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /card -->
+    </div><!-- /entry -->
+
+  </div><!-- /body -->
+
+  <!-- ── Closing statement ── -->
+  <div class="atl__closing">
+    <div class="atl__closing-line"></div>
+    <p class="atl__closing-quote">
+      "From solving engineering problems to building intelligent software systems."
+    </p>
+    <p class="atl__closing-name">Negar Pourmahdi · Born November 28, 2000</p>
+  </div>
+
+  <!-- Lightbox -->
+  <div *ngIf="lightboxImage()" class="atl__lightbox" (click)="closeLightbox()">
+    <button class="atl__lightbox-close" (click)="closeLightbox()">✕</button>
+    <img [src]="lightboxImage()" alt="Preview" class="atl__lightbox-img" (click)="$event.stopPropagation()">
+  </div>
+
+</section>

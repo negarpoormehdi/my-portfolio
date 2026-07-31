@@ -1,0 +1,47 @@
+<section
+  class="hero"
+  [style.opacity]="1 - scrollProgress()"
+  [style.transform]="'scale(' + (1 - scrollProgress() * 0.08) + ') translateY(' + (scrollProgress() * -40) + 'px)'"
+  [style.filter]="'blur(' + (scrollProgress() * 8) + 'px)'"
+  [style.pointer-events]="scrollProgress() > 0.9 ? 'none' : 'auto'"
+>
+  <!-- Glow blob -->
+  <div class="hero__glow"></div>
+
+  <div class="hero__content">
+    <!-- Badge -->
+    <span class="hero__badge">MOBILE &amp; FRONTEND ENGINEER</span>
+
+    <!-- Headline -->
+    <h1 class="hero__title">
+      Building Modern Web &amp; Mobile<br>
+      Experiences as
+      <span class="hero__name">
+        {{ displayedName() }}<span
+          class="hero__cursor"
+          [class.hero__cursor--hidden]="!showCursor()"
+        >|</span>
+      </span>
+    </h1>
+
+    <!-- Sub-text -->
+    <p class="hero__subtitle">
+      Developing modern web and mobile apps with Flutter and Angular —<br>
+      clean architecture, great performance, intuitive experiences.
+    </p>
+
+    <!-- Skill tags -->
+    <div class="hero__tags">
+      <span *ngFor="let skill of skills" class="hero__tag">{{ skill }}</span>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero__scroll-hint" [style.opacity]="1 - scrollProgress() * 3">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <polyline points="19 12 12 19 5 12"/>
+    </svg>
+    <span>Scroll</span>
+  </div>
+</section>

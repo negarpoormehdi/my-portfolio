@@ -1,0 +1,54 @@
+@use '../../../styles/tokens' as *;
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__main {
+    flex: 1;
+  }
+
+  // Hero wrapper — tall so sticky has scroll range
+  &__hero-wrap {
+    position: relative;
+    height: 160vh;
+  }
+
+  // Shared section wrapper
+  &__section-wrap {
+    position: relative;
+    z-index: 1;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, var(--bg-dot) 1px, transparent 1px);
+    background-size: 28px 28px;
+    transition: background-color 0.35s ease;
+    // Reduced vertical padding via section inner components
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  // Divider line between sections
+  &__divider {
+    position: relative;
+    z-index: 1;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, var(--bg-dot) 1px, transparent 1px);
+    background-size: 28px 28px;
+    height: 1px;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(109, 94, 247, 0.2) 20%,
+        rgba(109, 94, 247, 0.45) 50%,
+        rgba(109, 94, 247, 0.2) 80%,
+        transparent 100%
+      );
+    }
+  }
+}

@@ -1,0 +1,335 @@
+@use '../../../styles/tokens' as *;
+
+// ─────────────────────────────────────────
+// Section wrapper
+// ─────────────────────────────────────────
+.contact {
+  padding: $space-16 $space-8;
+
+  &__outer {
+    max-width: 740px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-4;
+  }
+
+  // ── Main outer card ─────────────────
+  &__card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--card-shadow);
+    padding: $space-12 $space-12;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+
+    // Scroll-in animation
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition:
+      opacity   0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      border-color 0.35s ease;
+
+    &--visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    &:hover {
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--border-hover);
+    }
+  }
+
+  // ── Glow orbs ───────────────────────
+  &__glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.5;
+
+    &--tl {
+      top: -80px;
+      left: -60px;
+      background: radial-gradient(circle, rgba($color-primary, 0.15), transparent 70%);
+    }
+    &--br {
+      bottom: -80px;
+      right: -60px;
+      background: radial-gradient(circle, rgba($color-tertiary, 0.12), transparent 70%);
+    }
+  }
+
+  // ── Header ──────────────────────────
+  &__header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: $space-8;
+  }
+
+  &__badge {
+    display: inline-block;
+    font-family: $font-label;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-primary;
+    background: rgba($color-primary, 0.09);
+    border: 1px solid rgba($color-primary, 0.22);
+    border-radius: $radius-full;
+    padding: 5px 14px;
+    margin-bottom: $space-6;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: $weight-extrabold;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+    margin-bottom: $space-4;
+    transition: color 0.35s ease;
+  }
+
+  &__title-accent {
+    color: $color-primary;
+    display: block;
+    min-height: 1.2em;
+  }
+
+  &__cursor {
+    display: inline-block;
+    color: $color-primary;
+    font-weight: $weight-light;
+    margin-left: 1px;
+    transition: opacity 0.1s;
+    &--hidden { opacity: 0; }
+  }
+
+  &__subtitle {
+    font-family: $font-body;
+    font-size: $text-base;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 460px;
+    margin: 0 auto;
+    transition: color 0.35s ease;
+  }
+
+  // ── Link cards row ──────────────────
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-3;
+    margin-bottom: $space-6;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-6 $space-4;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: $radius-xl;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    // Scroll-in
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity        0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      transform      0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      background     0.25s ease,
+      border-color   0.25s ease,
+      box-shadow     0.25s ease;
+
+    &--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    // ── Hover ──────────────────────────
+    &:hover {
+      background: rgba($color-primary, 0.06);
+      border-color: rgba($color-primary, 0.3);
+      box-shadow: 0 8px 28px rgba($color-primary, 0.14);
+      transform: translateY(-5px) scale(1.02);
+
+      .contact__link-icon {
+        background: $color-primary;
+        border-color: $color-primary;
+        color: #fff;
+        transform: scale(1.12) rotate(-5deg);
+      }
+
+      .contact__link-label { color: $color-primary; }
+
+      .contact__link-shine {
+        left: 100%;
+        transition: left 0.45s ease;
+      }
+    }
+  }
+
+  &__link-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: $radius-lg;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-primary;
+    transition:
+      background   0.25s ease,
+      border-color 0.25s ease,
+      color        0.25s ease,
+      transform    0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    svg { width: 20px; height: 20px; }
+  }
+
+  &__link-label {
+    font-family: $font-headline;
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    color: var(--text-primary);
+    transition: color 0.25s ease;
+  }
+
+  &__link-action {
+    font-family: $font-body;
+    font-size: $text-xs;
+    color: var(--text-muted);
+    transition: color 0.35s ease;
+  }
+
+  // Shine sweep on hover
+  &__link-shine {
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255,255,255,0.18) 50%,
+      transparent 60%
+    );
+    transform: skewX(-15deg);
+    pointer-events: none;
+    transition: left 0s;
+  }
+
+  // ── Book CTA row ────────────────────
+  &__book-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-4;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__book-text {
+    font-family: $font-body;
+    font-size: $text-sm;
+    color: var(--text-muted);
+    transition: color 0.35s ease;
+  }
+
+  &__book-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-family: $font-body;
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    color: $color-primary;
+    background: transparent;
+    border: 1.5px solid rgba($color-primary, 0.35);
+    border-radius: $radius-full;
+    padding: $space-2 $space-6;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition:
+      color          0.25s ease,
+      border-color   0.25s ease,
+      box-shadow     0.25s ease;
+
+    // Fill effect — pseudo-element slides in
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $color-primary;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+    }
+
+    svg, span {
+      position: relative;
+      z-index: 1;
+      transition: color 0.25s ease;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+      transition: color 0.25s ease;
+    }
+
+    &:hover {
+      color: #fff;
+      border-color: $color-primary;
+      box-shadow: 0 4px 18px rgba($color-primary, 0.35);
+
+      &::before { transform: scaleX(1); }
+
+      svg, span { color: #fff; }
+    }
+  }
+
+  // ── Response time ───────────────────
+  &__response {
+    font-family: $font-body;
+    font-size: $text-xs;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    transition: color 0.35s ease;
+  }
+}
+
+// ─────────────────────────────────────────
+// Responsive
+// ─────────────────────────────────────────
+@media (max-width: 600px) {
+  .contact {
+    &__card { padding: $space-8 $space-6; }
+    &__links { grid-template-columns: 1fr; }
+    &__book-row { flex-direction: column; gap: $space-3; }
+  }
+}

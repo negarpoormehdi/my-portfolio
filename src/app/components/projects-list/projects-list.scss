@@ -1,0 +1,482 @@
+@use '../../../styles/tokens' as *;
+
+/* ══════════════════════════════════════════════════════
+   Sizes
+══════════════════════════════════════════════════════ */
+$card-w       : 190px;
+$card-h-active: 400px;
+$card-h-near  : 352px;
+$card-h-far   : 300px;
+
+$bubble-active: 60px;
+$bubble-near  : 50px;
+$bubble-far   : 42px;
+
+$stem-active  : 32px;
+$stem-near    : 26px;
+$stem-far     : 20px;
+
+/* horizontal step between slot centres */
+$step         : 210px;
+
+/* ── 3-D perspective depth ── */
+$perspective  : 1100px;
+/* how much each step rotates in Y */
+$angle-step   : 12deg;
+/* how far cards slide back on Z per step away */
+$z-step       : 80px;
+
+/* ══════════════════════════════════════════════════════
+   Page wrapper
+══════════════════════════════════════════════════════ */
+.projects {
+  padding: $space-16 0 $space-12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__header {
+    text-align: center;
+    padding: 0 $space-8;
+    margin-bottom: $space-12;
+  }
+
+  &__eyebrow {
+    font-family: $font-label;
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: $color-primary;
+    margin: 0 0 $space-3;
+  }
+
+  &__title {
+    font-family: $font-headline;
+    font-size: clamp(2.2rem, 5vw, #{$text-5xl});
+    font-weight: $weight-extrabold;
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 $space-4;
+    letter-spacing: -1.2px;
+  }
+
+  &__subtitle {
+    font-family: $font-body;
+    font-size: $text-lg;
+    color: var(--text-secondary);
+    margin: 0 auto;
+    max-width: 560px;
+    line-height: 1.65;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-4;
+    margin-top: $space-8;
+  }
+
+  &__dots {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    border: none;
+    background: var(--border);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, width 0.3s ease;
+
+    &--active {
+      background: $color-primary;
+      width: 26px;
+    }
+  }
+
+  &__counter {
+    font-family: $font-headline;
+    font-size: $text-base;
+    font-weight: $weight-bold;
+    color: var(--text-primary);
+
+    .sep {
+      color: var(--text-muted);
+      margin: 0 3px;
+      font-weight: $weight-regular;
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   Carousel wrapper
+══════════════════════════════════════════════════════ */
+.carousel {
+  position: relative;
+  width: 100%;
+  /* enough room for tallest card + bubble + stem */
+  height: calc(#{$card-h-active} + #{$bubble-active} + #{$stem-active} + 48px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  user-select: none;
+  touch-action: pan-y;
+
+  /* spine behind the bubbles row */
+  &__spine {
+    position: absolute;
+    top: calc(#{$bubble-active} / 2 + 18px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(#{$step} * 4 + #{$card-w});
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba($color-primary, 0.28) 12%,
+      rgba($color-primary, 0.28) 88%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 3-D perspective scene */
+  &__scene {
+    position: relative;
+    width: $card-w;
+    /* height of the scene equals card+bubble+stem at active size */
+    height: calc(#{$card-h-active} + #{$bubble-active} + #{$stem-active});
+    perspective: $perspective;
+    perspective-origin: 50% 80%;
+  }
+
+  /* arrows */
+  &__arrow {
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    z-index: 20;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-full;
+    border: 1.5px solid var(--btn-ghost-border);
+    background: var(--btn-ghost-bg);
+    backdrop-filter: blur(10px);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+
+    svg { width: 20px; height: 20px; }
+
+    &:hover {
+      background: var(--btn-ghost-hover);
+      border-color: $color-primary;
+      color: $color-primary;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &:active { transform: translateY(-50%) scale(0.95); }
+
+    &--prev { left: clamp($space-4, 5vw, 80px); }
+    &--next { right: clamp($space-4, 5vw, 80px); }
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   Project card — absolutely positioned inside the scene,
+   transformed by CSS var(--offset)
+══════════════════════════════════════════════════════ */
+.project-card {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: $card-w;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+
+  /*
+   * The magic:
+   * translateX  — moves card left/right by slot offset
+   * translateZ  — pushes side cards back (depth)
+   * rotateY     — tilts side cards inward
+   * scale        — near/far handled via explicit class
+   */
+  --tx: calc(var(--offset) * #{$step});
+  --tz: calc(abs(var(--offset)) * -#{$z-step});
+  --ry: calc(var(--offset) * -#{$angle-step});
+
+  transform:
+    translateX(var(--tx))
+    translateZ(var(--tz))
+    rotateY(var(--ry));
+
+  transform-style: preserve-3d;
+  transform-origin: center bottom;
+
+  transition:
+    transform   0.52s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity     0.52s ease,
+    filter      0.52s ease,
+    z-index     0s   linear 0s;
+
+  /* default invisible */
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(3px);
+  z-index: 0;
+
+  /* ── far (|offset| == 2) ──────────────────────────── */
+  &.is-far {
+    opacity: 0.48;
+    filter: blur(0.5px);
+    pointer-events: all;
+    z-index: 1;
+
+    .project-card__bubble {
+      width: $bubble-far; height: $bubble-far;
+      span { font-size: $text-sm; }
+    }
+    .project-card__line  { height: $stem-far; }
+    .project-card__body  { min-height: $card-h-far; }
+    .project-card__icon-wrap { width: 46px; height: 46px; }
+    .project-card__icon      { width: 20px; height: 20px; }
+    .project-card__title     { font-size: 0.78rem; }
+    .project-card__desc      { font-size: 0.68rem; }
+  }
+
+  /* ── near (|offset| == 1) ─────────────────────────── */
+  &.is-near {
+    opacity: 0.78;
+    filter: blur(0);
+    pointer-events: all;
+    z-index: 2;
+
+    .project-card__bubble {
+      width: $bubble-near; height: $bubble-near;
+      span { font-size: $text-base; }
+    }
+    .project-card__line  { height: $stem-near; }
+    .project-card__body  { min-height: $card-h-near; }
+    .project-card__icon-wrap { width: 58px; height: 58px; }
+    .project-card__icon      { width: 26px; height: 26px; }
+    .project-card__title     { font-size: $text-base; }
+    .project-card__desc      { font-size: 0.75rem; }
+  }
+
+  /* ── active (offset == 0) ─────────────────────────── */
+  &.is-active {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: all;
+    cursor: default;
+    z-index: 5;
+
+    .project-card__bubble {
+      width: $bubble-active; height: $bubble-active;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.28), 0 0 0 4px var(--bg);
+      span { font-size: $text-xl; }
+    }
+    .project-card__line  { height: $stem-active; }
+    .project-card__body  {
+      min-height: $card-h-active;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    }
+    .project-card__icon-wrap { width: 72px; height: 72px; }
+    .project-card__icon      { width: 34px; height: 34px; }
+    .project-card__title     { font-size: $text-xl; }
+    .project-card__desc      { font-size: $text-sm; }
+  }
+
+  /* ── Stem ──────────────────────────────────────────── */
+  &__stem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+  }
+
+  &__bubble {
+    width: $bubble-far;
+    height: $bubble-far;
+    border-radius: $radius-full;
+    background: linear-gradient(135deg, var(--card-from), var(--card-to));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22), 0 0 0 3px var(--bg);
+    flex-shrink: 0;
+    transition:
+      width  0.52s cubic-bezier(0.4,0,0.2,1),
+      height 0.52s cubic-bezier(0.4,0,0.2,1),
+      box-shadow 0.4s ease;
+
+    span {
+      font-family: $font-headline;
+      font-size: $text-sm;
+      font-weight: $weight-bold;
+      color: $color-white;
+      line-height: 1;
+      transition: font-size 0.52s ease;
+    }
+  }
+
+  &__line {
+    width: 2px;
+    height: $stem-far;
+    background: linear-gradient(to bottom, var(--card-to), rgba(255,255,255,0));
+    opacity: 0.5;
+    flex-shrink: 0;
+    transition: height 0.52s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── Body ──────────────────────────────────────────── */
+  &__body {
+    width: 100%;
+    min-height: $card-h-far;
+    background: linear-gradient(165deg, var(--card-from) 0%, var(--card-to) 100%);
+    border-radius: 22px;
+    padding: $space-6 $space-4 $space-6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+    transition:
+      min-height  0.52s cubic-bezier(0.4,0,0.2,1),
+      box-shadow  0.4s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.22) 0%, transparent 60%);
+      pointer-events: none;
+    }
+  }
+
+  /* ── Icon ──────────────────────────────────────────── */
+  &__icon-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: $radius-full;
+    background: rgba($color-white, 0.2);
+    border: 1.5px solid rgba($color-white, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $space-3;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: width 0.52s ease, height 0.52s ease;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: $color-white;
+    transition: width 0.52s ease, height 0.52s ease;
+  }
+
+  /* ── Text ──────────────────────────────────────────── */
+  &__title {
+    font-family: $font-headline;
+    font-size: 0.78rem;
+    font-weight: $weight-bold;
+    color: $color-white;
+    margin: 0 0 $space-2;
+    letter-spacing: -0.2px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.3;
+    transition: font-size 0.52s ease;
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: 0.68rem;
+    line-height: 1.6;
+    color: rgba($color-white, 0.88);
+    margin: 0 0 $space-3;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    transition: font-size 0.52s ease;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+  }
+
+  &__tag {
+    font-family: $font-label;
+    font-size: 0.6rem;
+    font-weight: $weight-semibold;
+    color: var(--card-from);
+    background: $color-white;
+    padding: 2px 6px;
+    border-radius: $radius-full;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── View Project CTA (active card only) ───── */
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: $space-4;
+    padding: $space-2 $space-4;
+    font-family: $font-label;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    letter-spacing: 0.4px;
+    color: var(--card-from);
+    background: $color-white;
+    border-radius: $radius-full;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    transition: background 0.2s ease, color 0.2s ease,
+                transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+    svg {
+      width: 13px;
+      height: 13px;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      background: rgba($color-white, 0.92);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+
+      svg { transform: translateX(3px); }
+    }
+
+    &:active { transform: translateY(0); }
+  }
+}
