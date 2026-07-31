@@ -1,7 +1,6 @@
 @use '../../../styles/tokens' as *;
+@use '../../../styles/shared' as *;
 
-// ─────────────────────────────────────────
-// Section wrapper
 // ─────────────────────────────────────────
 .atl {
   padding: $space-8 $space-8 $space-16;
@@ -14,29 +13,18 @@
   }
 
   &__pre-label {
-    display: inline-block;
-    font-family: $font-label;
+    @include pre-label();
     font-size: 0.65rem;
-    font-weight: $weight-bold;
     letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: $color-primary;
-    background: rgba($color-primary, 0.08);
-    border: 1px solid rgba($color-primary, 0.2);
-    border-radius: $radius-full;
     padding: 4px 14px;
     margin-bottom: $space-4;
   }
 
   &__title {
-    font-family: $font-headline;
-    font-size: clamp(2rem, 4vw, 3rem);
+    @include section-title(2rem, 4vw, 3rem);
     font-weight: $weight-extrabold;
-    color: var(--text-primary);
     letter-spacing: -0.8px;
-    line-height: 1.2;
     margin-bottom: $space-4;
-    transition: color 0.35s ease;
   }
 
   &__accent  { color: $color-secondary; }

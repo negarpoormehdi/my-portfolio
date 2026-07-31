@@ -1,5 +1,7 @@
 @use '../../../styles/tokens' as *;
+@use '../../../styles/shared' as *;
 
+// ─────────────────────────────────────────
 .about {
   padding: $space-8 $space-8 $space-12;
   max-width: 1100px;
@@ -30,29 +32,15 @@
   }
 
   &__badge {
-    display: inline-block;
-    font-family: $font-label;
-    font-size: $text-xs;
-    font-weight: $weight-semibold;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: $color-primary;
-    background: rgba($color-primary, 0.09);
-    border: 1px solid rgba($color-primary, 0.22);
-    border-radius: $radius-full;
-    padding: 4px 12px;
+    @include badge();
     margin-bottom: $space-3;
   }
 
   &__title {
-    font-family: $font-headline;
-    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    @include section-title(1.8rem, 3.5vw, 2.6rem);
     font-weight: $weight-extrabold;
-    color: var(--text-primary);
     letter-spacing: -0.6px;
-    line-height: 1.2;
     margin-bottom: $space-3;
-    transition: color 0.35s ease;
 
     &-accent  { color: $color-secondary; }
     &-accent2 { color: $color-primary; }

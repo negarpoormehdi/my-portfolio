@@ -1,4 +1,5 @@
 @use '../../../styles/tokens' as *;
+@use '../../../styles/shared' as *;
 
 // ─────────────────────────────────────────
 // Timeline wrapper
@@ -300,15 +301,6 @@
       padding-bottom: $space-2;
     }
   }
-}
-
-// ─────────────────────────────────────────
-// Footer
-// ─────────────────────────────────────────
-app-footer .footer {
-  background: var(--surface);
-  border-top-color: var(--border);
-  transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 // ─────────────────────────────────────────

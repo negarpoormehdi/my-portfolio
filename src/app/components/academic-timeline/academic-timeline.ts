@@ -92,7 +92,7 @@ export class AcademicTimelineComponent implements AfterViewInit, OnDestroy {
         'First exposure to AI-based decision making in real systems',
         'Learned Python through collaboration and team guidance',
       ],
-      images: ['/atwork-team.jpg', '/atwork-robot.png'],
+      images: ['/atwork-team.webp', '/atwork-robot.webp'],
       system: [
         { label: 'Perception', items: ['Object Detection', 'Object Recognition', 'Landmark Detection'] },
         { label: 'Localization', items: ['Odometry', 'Vision-Based', 'Laser-Based', 'IMU + Sensor Fusion'] },
@@ -149,7 +149,7 @@ export class AcademicTimelineComponent implements AfterViewInit, OnDestroy {
         'Seat map visualization with real-time availability',
         'Eliminated manual admin communication for reservations',
       ],
-      images: ['/src-team.jpg'],
+      images: ['/src-team.webp'],
       side: 'left',
     },
     {
