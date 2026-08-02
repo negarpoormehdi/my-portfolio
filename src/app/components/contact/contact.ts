@@ -42,19 +42,19 @@ export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
       icon: 'email',
       label: 'Email',
       action: 'Send a message',
-      href: 'mailto:negar@example.com',
+      href: 'mailto:negar.poormehdi.personal@gmail.com',
     },
     {
       icon: 'linkedin',
       label: 'LinkedIn',
       action: 'Connect with me',
-      href: 'https://linkedin.com',
+      href: 'https://linkedin.com/in/negar-poormehdi-ab0696345',
     },
     {
       icon: 'github',
       label: 'GitHub',
       action: 'Check my code',
-      href: 'https://github.com',
+      href: 'https://github.com/negarpoormehdi',
     },
   ];
 
