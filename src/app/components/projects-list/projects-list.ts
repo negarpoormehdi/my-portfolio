@@ -12,7 +12,7 @@ import { ProjectsService, CaseStudy } from '../../services/projects.service';
 export class ProjectsListComponent {
   private readonly svc = inject(ProjectsService);
 
-  /** Flat list used by the carousel — same data as case studies */
+  /** Flat list used by the carousel same data as case studies */
   readonly projects: CaseStudy[] = this.svc.projects;
 
   activeIndex = 0;

@@ -24,7 +24,7 @@ export class ThemeService {
   private getSavedTheme(): Theme {
     const saved = localStorage.getItem(this.STORAGE_KEY) as Theme | null;
     if (saved === 'light' || saved === 'dark') return saved;
-    // Respect OS preference as fallback
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to light mode
+    return 'light';
   }
 }

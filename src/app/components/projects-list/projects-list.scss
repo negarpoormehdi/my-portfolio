@@ -253,7 +253,7 @@ $z-step       : 80px;
     .project-card__line  { height: $stem-far; }
     .project-card__body  { min-height: $card-h-far; }
     .project-card__icon-wrap { width: 46px; height: 46px; }
-    .project-card__icon      { width: 20px; height: 20px; }
+    .project-card__icon      { font-size: 20px; }
     .project-card__title     { font-size: 0.78rem; }
     .project-card__desc      { font-size: 0.68rem; }
   }
@@ -272,7 +272,7 @@ $z-step       : 80px;
     .project-card__line  { height: $stem-near; }
     .project-card__body  { min-height: $card-h-near; }
     .project-card__icon-wrap { width: 58px; height: 58px; }
-    .project-card__icon      { width: 26px; height: 26px; }
+    .project-card__icon      { font-size: 26px; }
     .project-card__title     { font-size: $text-base; }
     .project-card__desc      { font-size: 0.75rem; }
   }
@@ -296,7 +296,7 @@ $z-step       : 80px;
       box-shadow: 0 24px 64px rgba(0,0,0,0.35);
     }
     .project-card__icon-wrap { width: 72px; height: 72px; }
-    .project-card__icon      { width: 34px; height: 34px; }
+    .project-card__icon      { font-size: 34px; }
     .project-card__title     { font-size: $text-xl; }
     .project-card__desc      { font-size: $text-sm; }
   }
@@ -390,10 +390,13 @@ $z-step       : 80px;
   }
 
   &__icon {
-    width: 20px;
-    height: 20px;
+    font-size: 20px;
     color: $color-white;
-    transition: width 0.52s ease, height 0.52s ease;
+    transition: font-size 0.52s ease;
+    line-height: 1;
+    // override mat-icon defaults so size is controlled here
+    width: auto !important;
+    height: auto !important;
   }
 
   /* ── Text ──────────────────────────────────────────── */

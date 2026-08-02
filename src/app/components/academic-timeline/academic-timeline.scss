@@ -344,7 +344,16 @@
     &--achievement {
       font-weight: $weight-semibold;
       background: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
+  }
+
+  &__achievement-icon {
+    font-size: 0.75rem !important;
+    line-height: 1;
+    vertical-align: middle;
   }
 
   // ── Expandable system ─────────────────
@@ -488,13 +497,13 @@
   border-radius: 50%;
   background: var(--surface);
   color: var(--text-primary);
-  font-size: 24px;
-  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.15s ease;
+
+  .mat-icon { font-size: 22px; }
 
   &:hover { transform: scale(1.1); }
 }

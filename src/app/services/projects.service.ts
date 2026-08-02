@@ -23,11 +23,17 @@ export interface Feature {
 }
 
 export interface Asset {
-  type: 'video' | 'diagram' | 'photo' | 'mobile-mockup' | 'desktop-mockup';
+  type: 'video' | 'diagram' | 'photo' | 'mobile-mockup' | 'desktop-mockup' | 'scrollable-desktop';
   icon: string;
   title: string;
   description: string;
-  src?: string;   // actual file path from /public — if set, renders real media
+  src?: string;
+}
+
+export interface ProjectLink {
+  type: 'appstore' | 'googleplay' | 'website';
+  url: string;
+  label: string;
 }
 
 export interface CaseStudy {
@@ -47,6 +53,7 @@ export interface CaseStudy {
   features?: Feature[];
   assets: Asset[];
   quote: string;
+  links?: ProjectLink[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -55,129 +62,45 @@ export class ProjectsService {
   readonly projects: CaseStudy[] = [
 
     /* ────────────────────────────────────────────────
-       01 · AT WORK Robotics
-    ──────────────────────────────────────────────── */
-    {
-      slug: 'robotics',
-      shortTitle: 'AT WORK Robotics',
-      title: 'AT WORK — Robotics & Autonomous Systems',
-      role: 'Electronics & Software System Developer',
-      tagline: 'Integrated Perception, Navigation, and AI-Driven Decision-Making for Autonomous Industrial Robotics.',
-      gradientFrom: '#F59E0B',
-      gradientTo: '#FBBF24',
-      icon: 'robot',
-      tags: ['Python', 'C++', 'ROS', 'MATLAB', 'OpenCV', 'YOLOv8', 'Computer Vision', 'AI'],
-      overview: `As part of a global RoboCup AT WORK team, I contributed to engineering a fully autonomous industrial robot capable of perceiving its environment, navigating safely, manipulating objects, and making real-time decisions without human input. The system integrated multiple sensory pipelines — LiDAR, camera, IMU — processed through a unified ROS architecture into a coherent world model that drove path planning and arm manipulation behaviours. The project earned 1st Place Nationally and 3rd Place Globally in competitive evaluation.`,
-      metrics: [
-        { value: '🥇 1st', label: 'Place — National RoboCup AT WORK', accent: true },
-        { value: '🥉 3rd', label: 'Place — Global RoboCup AT WORK', accent: true },
-        { value: '6-Stage', label: 'Fully Integrated Autonomy Pipeline' },
-      ],
-      technicalFramework: [
-        {
-          label: 'Perception & Vision',
-          items: [
-            'ROS (Robot Operating System) node architecture',
-            'OpenCV — image processing & feature extraction',
-            'YOLOv8 — real-time object detection & landmark identification',
-            'Depth camera integration for 3D environment mapping',
-          ],
-        },
-        {
-          label: 'Navigation & Localisation',
-          items: [
-            'Odometry-based pose estimation',
-            'Sensor fusion: IMU + LiDAR (Extended Kalman Filter)',
-            'SLAM — simultaneous localisation and mapping',
-            'Dijkstra & RRT path planning algorithms',
-          ],
-        },
-        {
-          label: 'System Architecture & Control',
-          items: [
-            'World Model Management — unified environment state',
-            'Hierarchical Decision Trees for task sequencing',
-            'Robotic arm inverse kinematics for manipulation',
-            'MATLAB simulation for pre-deployment validation',
-          ],
-        },
-      ],
-      pipeline: [
-        { index: 1, title: 'Sensors & Vision' },
-        { index: 2, title: 'Perception' },
-        { index: 3, title: 'Localisation & Sensor Fusion' },
-        { index: 4, title: 'World Model' },
-        { index: 5, title: 'Path Planning & Decision Making' },
-        { index: 6, title: 'Autonomous Behaviour & Manipulation' },
-      ],
-      assets: [
-        {
-          type: 'video',
-          icon: 'play',
-          title: 'Video Showcase',
-          description: '16:9 HD embedded video / GIF: Robot performing autonomous pick-and-place tasks and navigating an obstacle course in competition conditions.',
-        },
-        {
-          type: 'diagram',
-          icon: 'sitemap',
-          title: 'ROS Architecture Diagram',
-          description: 'Full ROS system architecture diagram showing ROS nodes, sensor inputs (LiDAR / Camera), topic communication, and motor output controllers.',
-        },
-        {
-          type: 'photo',
-          icon: 'trophy',
-          title: 'Competition Photo & GUI Dashboard',
-          description: 'High-resolution action photo of the robot in competition alongside the GUI monitoring dashboard displaying real-time sensor telemetry and world model state.',
-        },
-      ],
-      quote: 'Understanding how perception, data, planning, and action work together in robotics formed my foundation for complex intelligent software systems.',
-    },
-
-    /* ────────────────────────────────────────────────
-       02 · AKSSI
+       01 · AKSSI
     ──────────────────────────────────────────────── */
     {
       slug: 'akssi',
       shortTitle: 'AKSSI Healthcare',
-      title: 'AKSSI — Telehealth & Care Communication Platform',
+      title: 'AKSSI',
       role: 'Cross-Platform Mobile Engineer · Flutter',
-      tagline: 'Multi-role healthcare ecosystem connecting patients, doctors, and family members with real-time AI analytics.',
+      tagline: 'Multi-role healthcare app connecting patients, doctors, and family members built in Flutter with native code where the packages couldn\'t keep up.',
       gradientFrom: '#6D5EF7',
       gradientTo: '#8B7EF8',
-      icon: 'health',
-      tags: ['Flutter', 'Dart', 'Firebase', 'Java', 'Swift', 'WebRTC', 'Python', 'AI'],
-      overview: `AKSSI is a cross-platform healthcare application designed around three distinct user roles — Patient, Doctor, and Relative — each with tailored workflows. Patients monitor vitals (heart rate, blood pressure, oxygen saturation), access AI-generated health trend summaries, and connect with their care team through encrypted video calls. Doctors manage patient case files, review historical analytics, and conduct remote consultations. Relatives receive curated health status updates without compromising medical privacy. The platform was piloted in a clinical environment and maintained 99.9% uptime throughout testing.`,
+      icon: 'health_and_safety',
+      tags: ['Flutter', 'Dart', 'Firebase', 'Java', 'Swift', 'HTML/JS', 'WebRTC'],
+      overview: `AKSSI connects three roles patients, doctors, and family members each with their own version of the app. Patients track vitals, view health reports, and message or video-call their care team. Doctors manage patient records and consult remotely. Family members get status updates without stepping into medical detail they're not meant to see. Built mostly in Flutter, with native code stepping in wherever Flutter's ecosystem couldn't keep up.`,
       metrics: [
-        { value: '99.9%', label: 'Uptime during pilot clinical testing', accent: true },
         { value: '3 Roles', label: 'Patient · Doctor · Relative', accent: true },
-        { value: 'E2E', label: 'Encrypted communication channels' },
+        { value: 'App Store', label: '& Google Play', accent: true },
       ],
       technicalFramework: [
         {
-          label: 'Patient & Doctor Mobile App',
+          label: 'Patient & Doctor App',
           items: [
-            'Flutter & Dart — single codebase for iOS and Android',
-            'RESTful APIs — health data CRUD and user management',
-            'WebSockets — real-time vital sign data streaming',
-            'Firebase — push notifications and offline caching',
+            'Flutter & Dart single codebase for iOS and Android',
+            'REST APIs for data, Firebase for notifications and offline caching',
+            'Interactive Body Map SVG pain-location marker built in HTML/JS, embedded in Flutter',
           ],
         },
         {
-          label: 'AI Vitals Modelling',
+          label: 'Video Calls & Chat',
           items: [
-            'Python-based predictive analytics service',
-            'Time-series analysis for patient stability trends',
-            'Anomaly detection — alerts for critical vital deviations',
-            'Health trend summaries delivered to doctor dashboard',
+            'Native Android (Java) & iOS (Swift) implementations for video calls available Flutter packages weren\'t reliable enough',
+            'Bridged back into the Flutter app via platform channels',
+            'Chat on Firebase with native notification handling on both platforms',
           ],
         },
         {
-          label: 'Telehealth & Media',
+          label: 'Vitals & Health Graphs',
           items: [
-            'WebRTC / Agora SDK — low-latency encrypted video calls',
-            'Real-time bidirectional chat with message persistence',
-            'Media sharing — secure attachment handling in consultations',
-            'Java (Android) & Swift (iOS) native bridges for device sensors',
+            'Bina camera integration measures vital signs through the device camera official package was unstable, runs on custom native code',
+            'Health-data graph built from scratch no Flutter charting library handled the time-range and visualisation requirements',
           ],
         },
       ],
@@ -185,292 +108,308 @@ export class ProjectsService {
         {
           type: 'mobile-mockup',
           icon: 'play',
-          title: 'Patient Dashboard Walkthrough',
-          description: 'Full video walkthrough of the Patient Dashboard — vital sign tracking, AI health summaries, and navigation across the multi-role interface.',
+          title: 'Interactive Body Map',
+          description: 'SVG body map built in HTML/JS and embedded in Flutter patients tap the front or back of the body to mark exactly where they feel pain before submitting a report.',
           src: 'akssi-vid1.MP4',
         },
         {
           type: 'mobile-mockup',
           icon: 'play',
-          title: 'WebRTC Video Call Demo',
-          description: 'Embedded video walkthrough showing a seamless WebRTC video consultation between the Doctor and Patient app interfaces with live vital overlays.',
+          title: 'Doctor Ticket Dashboard',
+          description: 'Doctor-side ticket management dashboard incoming patient reports, triage status, and assigned cases in one view.',
           src: 'akssi-vid2.mp4',
         },
         {
           type: 'mobile-mockup',
           icon: 'mobile',
-          title: 'App Screenshot — Screen 1',
-          description: 'Mobile screenshot from the AKSSI app showing core UI components and the primary user flow.',
+          title: 'Patient Dashboard',
+          description: 'Patient home screen health summary, active reports, and quick access to the care team.',
           src: 'akksi-pic1.webp',
         },
         {
           type: 'mobile-mockup',
           icon: 'mobile',
-          title: 'App Screenshot — Screen 2',
-          description: 'Mobile screenshot highlighting the vitals monitoring and health data visualisation screen.',
+          title: 'Bina Vitals Screen',
+          description: 'The Bina camera integration screen patients hold their phone camera to measure vitals. Built on custom native code after the official package proved unstable.',
           src: 'akssi-pic2.webp',
         },
         {
           type: 'mobile-mockup',
           icon: 'mobile',
-          title: 'App Screenshot — Screen 3',
-          description: 'Mobile screenshot of the communication and teleconsultation interface within the AKSSI platform.',
+          title: 'Health Data Graph',
+          description: 'Custom-built health graph showing vital sign history over time no Flutter charting library handled the time-range and visualisation requirements, so it was written from scratch.',
           src: 'akssi-pic3.webp',
         },
       ],
-      quote: 'This project strengthened my interest in the intersection of software engineering, artificial intelligence, and healthcare technologies.',
+      quote: 'This is where the "build it myself when the package doesn\'t fit" habit shows up the most four separate features, each built from scratch.',
+      links: [
+        { type: 'appstore',   url: 'https://apps.apple.com/us/app/akssi/id6744976534', label: 'App Store' },
+        { type: 'googleplay', url: 'https://play.google.com/store/apps/details?id=com.budstechnology.akssing&hl=en', label: 'Google Play' },
+      ],
     },
 
     /* ────────────────────────────────────────────────
-       03 · Quest Learning
+       03 · Quest Learning (Polylo)
     ──────────────────────────────────────────────── */
     {
       slug: 'quest-learning',
-      shortTitle: 'Quest Learning',
-      title: 'EdTech Smart Language Learning Ecosystem',
-      role: 'Full-Stack & Mobile Developer · Flutter & Angular',
-      tagline: 'Gamified multi-role education platform with dynamic assessment engine and teacher management panels.',
+      shortTitle: 'Polylo',
+      title: 'Polylo',
+      role: 'Full-Stack Developer · Flutter & Angular',
+      tagline: 'Teachers design lessons and games; students play through them, practice vocabulary, and chat live each side with its own purpose.',
       gradientFrom: '#7C3AED',
       gradientTo: '#9B5FF5',
-      icon: 'book',
+      icon: 'school',
       tags: ['Flutter', 'Angular', 'Dart', 'TypeScript', 'REST API'],
-      overview: `An interactive web and mobile platform built for language learning institutions, supporting custom quiz creation, student progress tracking, automated grading, and gamified study modules. Teachers access a full-featured Angular dashboard to author multi-format question sets, monitor cohort performance, and configure learning paths. Students experience the platform through a gamified Flutter app featuring NPC conversations, badge systems, streak trackers, and real-time assessments — making language acquisition measurably more engaging.`,
+      overview: `Polylo (built as Quest) is where teachers and students each get their own side of the same platform. Teachers design lessons, quizzes, and scenario-based games; students play through them, practice vocabulary, and chat live with their teacher. Probably the most serious web project here, and where the JavaScript game layer was the first real attempt at gamification.`,
       metrics: [
-        { value: 'Multi-Role', label: 'Teacher · Student · Admin', accent: true },
-        { value: '5+ Types', label: 'Question formats supported', accent: false },
-        { value: 'Real-Time', label: 'Analytics & automated grading' },
+        { value: 'Flutter', label: 'mobile + Angular web', accent: true },
+        { value: '9 months', label: 'development', accent: false },
       ],
       technicalFramework: [
         {
-          label: 'Cross-Platform Mobile App',
+          label: 'Assessment Engine',
           items: [
-            'Flutter / Dart — full student experience on iOS & Android',
-            'Gamification engine — badges, streaks, XP and level progression',
-            'NPC conversation system — interactive dialogue-based learning',
-            'State management — BLoC pattern for predictable UI state',
+            'Dedicated question types for all four language skills: writing (graded manually, with inline comments), speaking (recorded and submitted), listening (audio playback), reading (highlighted text)',
+            'Lessons and quizzes assign to specific students or groups',
           ],
         },
         {
-          label: 'Teacher & Admin Panel',
+          label: 'Gamification',
           items: [
-            'Angular & TypeScript — responsive web dashboard',
-            'Multi-type question builder — MCQ, audio match, fill-in-the-blank',
-            'Real-time student analytics — performance heatmaps and progress curves',
-            'Cohort management — class creation, assignment scheduling',
+            'Teachers build scenario-based games: designing characters, movement paths, and embedding assessment questions directly into gameplay',
+            'JavaScript game layer built from scratch for the web panel',
           ],
         },
         {
-          label: 'Backend Integration',
+          label: 'Adaptive Flashcards & Analytics',
           items: [
-            'RESTful APIs — assessment data, media assets, and user state',
-            'Stateful assessment controllers — session persistence and resume',
-            'Automated grading engine — instant scoring and feedback delivery',
-            'Media pipeline — audio/image question asset management',
+            'Spaced-repetition system on the student side adjusts formatting, frequency, and notification timing based on individual performance',
+            'Live chat with timed in-chat questions',
+            'Analytics dashboard including a bubble chart where bubble size tracks word usage frequency per student',
           ],
         },
       ],
       features: [
         {
           icon: 'edit',
-          title: 'Multi-Type Question Builder',
-          description: 'Teachers create MCQ, audio-match, fill-in-the-blank, and drag-and-drop exercises through an intuitive drag-and-drop authoring interface.',
+          title: 'Multi-Skill Assessment',
+          description: 'Question types covering all four language skills writing with inline grading, speaking submissions, listening, and reading all assignable to specific students or groups.',
         },
         {
           icon: 'chart',
-          title: 'Real-Time Analytics',
-          description: 'Live dashboards track individual student performance, class averages, question difficulty indices, and learning velocity over time.',
+          title: 'Analytics Dashboard',
+          description: 'Real-time performance data per student including a bubble chart tracking vocabulary usage frequency over time.',
         },
         {
           icon: 'star',
-          title: 'Gamified Learning Flow',
-          description: 'Badge systems, streak trackers, XP points, leaderboards, and NPC interactions keep students engaged through progressively challenging content.',
+          title: 'Scenario-Based Games',
+          description: 'Teachers design interactive games with custom characters and movement paths assessment questions embedded directly into the gameplay flow.',
         },
       ],
       assets: [
         {
-          type: 'desktop-mockup',
-          icon: 'desktop',
-          title: 'Teacher Dashboard',
-          description: 'Full desktop dashboard mockup of the Teacher Panel showing the question builder interface, student analytics graphs, and class performance overview.',
-        },
-        {
-          type: 'video',
+          type: 'mobile-mockup',
           icon: 'play',
-          title: 'Student Lesson Demo',
-          description: 'Short screen recording showing a student completing an interactive gamified lesson on the mobile app — from NPC dialogue through to badge reward.',
+          title: 'Sentence Builder Student Mobile',
+          description: 'Student mobile app an exercise where the student arranges given words into a correct sentence, testing grammar and vocabulary in context.',
+          src: 'ploly-mobile2.MP4',
         },
         {
           type: 'mobile-mockup',
-          icon: 'mobile',
-          title: 'Results & Leaderboard',
-          description: 'Mobile screen mockup displaying the student test results summary, XP breakdown, personal best tracker, and class leaderboard ranking.',
+          icon: 'play',
+          title: 'Spelling Exercise Student Mobile',
+          description: 'Student mobile app spelling exercise for a vocabulary word the student has already learned.',
+          src: 'poolylo-mobile1.MP4',
         },
+        {
+          type: 'desktop-mockup',
+          icon: 'desktop',
+          title: 'Admin Management Panel',
+          description: 'The admin panel managing users, classes, and platform-wide content from a single dashboard.',
+          src: 'polylo-pic2.webp',
+        },
+        {
+          type: 'desktop-mockup',
+          icon: 'desktop',
+          title: 'Writing & Teacher Correction',
+          description: 'Teacher panel a student\'s writing submission alongside the teacher\'s inline corrections and grading.',
+          src: 'polylo-pic1.webp',
+        },
+        {
+          type: 'desktop-mockup',
+          icon: 'play',
+          title: 'Scenario Game Student Web',
+          description: 'The scenario-based game on the student web panel teachers design the characters and movement paths; assessment questions are embedded directly into the gameplay.',
+          src: 'plylo-game.MP4',
+        },
+
+
       ],
-      quote: 'Enhanced my expertise in building multi-role scalable software systems and understanding human-computer interaction in intelligent learning environments.',
+      quote: 'The most complete dual-platform project here where both sides of the product had to hold their own.',
     },
 
     /* ────────────────────────────────────────────────
-       04 · PinUp (Gamified Food Rewards)
+       04 · PinUp
     ──────────────────────────────────────────────── */
     {
       slug: 'pinup',
-      shortTitle: 'PinUp',
-      title: 'PinUp — Gamified Food Rewards & Loyalty Platform',
-      role: 'Mobile Application Developer · Flutter',
-      tagline: 'Engaging reward platform incentivising users through casual mini-games redeemable for restaurant promotions.',
+      shortTitle: 'Pinup',
+      title: 'Pinup',
+      role: 'Mobile Developer · Flutter',
+      tagline: 'Play games, earn points, exchange them for coupons from restaurant and fast-food partners.',
       gradientFrom: '#F472B6',
       gradientTo: '#EC4899',
-      icon: 'game',
+      icon: 'gamepad',
       tags: ['Flutter', 'Dart', 'REST API', 'Animations', 'Gamification'],
-      overview: `PinUp is a Flutter-based consumer application that gamifies user retention for the food and beverage industry. Users engage with interactive mini-games to accumulate loyalty points, which are exchangeable for digital vouchers and coupons redeemable at partner restaurants and fast-food venues. The platform integrates a secure points management system, push-notification campaigns, and a rewards marketplace — turning passive brand loyalty into an active, playful user experience that drives real-world footfall.`,
+      overview: `A straightforward points-and-rewards loop: play games, earn points, exchange them for coupons from restaurant and fast-food partners.`,
       metrics: [
-        { value: 'Casual', label: 'Mini-games with instant point rewards', accent: true },
-        { value: 'Digital', label: 'Voucher & coupon redemption system', accent: true },
-        { value: 'Partner', label: 'Restaurant & fast-food venue network' },
+        { value: 'Games', label: 'Earn points through mini-games', accent: true },
+        { value: 'Coupons', label: 'Redeemable at partner restaurants', accent: false },
       ],
       technicalFramework: [
         {
           label: 'Mobile Development',
           items: [
-            'Flutter & Dart — high-performance cross-platform app',
-            'Custom animations — game transitions, reward reveals, coin bursts',
-            'Lottie integration — cinematic reward animations',
-            'Responsive UI — adaptive layouts for varied device sizes',
+            'Flutter & Dart cross-platform app for iOS and Android',
+            'Custom animations game transitions and reward reveals',
+            'REST APIs handling the points ledger and coupon redemption against partner businesses',
           ],
         },
         {
-          label: 'Architecture & API',
+          label: 'Points & Rewards',
           items: [
-            'RESTful APIs — points ledger, voucher catalogue, user profile',
-            'Secure voucher code generation — unique single-use redemption tokens',
-            'Points management logic — earn, burn, and expiry rules engine',
-            'Offline-first caching — local state persistence between sessions',
-          ],
-        },
-        {
-          label: 'User Engagement',
-          items: [
-            'Gamification engine — daily challenges, bonus multipliers, streaks',
-            'Push notifications — personalised reward triggers and expiry reminders',
-            'Partner venue integration — real-time coupon availability sync',
-            'Analytics hooks — engagement funnel tracking for business reporting',
+            'Points management logic earn, burn, and expiry rules',
+            'Secure voucher code generation single-use redemption tokens',
+            'Partner venue integration real-time coupon availability',
           ],
         },
       ],
       assets: [
         {
-          type: 'video',
-          icon: 'play',
-          title: 'Gameplay & Coupon Demo',
-          description: '10-second smooth video loop showing gameplay interaction and the instant conversion of accumulated points into a redeemable restaurant coupon.',
+          type: 'mobile-mockup',
+          icon: 'mobile',
+          title: 'Activity Dashboard',
+          description: 'Management panel showing recent games played alongside the points earned from each session.',
+          src: 'pinup-pic1.webp',
         },
         {
           type: 'mobile-mockup',
-          icon: 'store',
-          title: 'Rewards Marketplace',
-          description: 'App screen showing the Rewards Marketplace interface with available fast-food coupons, partner logos, and real-time point balance display.',
+          icon: 'mobile',
+          title: 'Games Catalogue',
+          description: 'Full list of available mini-games browse and pick what to play next.',
+          src: 'pinup-pic2.webp',
         },
         {
           type: 'mobile-mockup',
-          icon: 'wallet',
-          title: 'Points Wallet & Profile',
-          description: 'Profile and Loyalty Points Wallet view showing earned points history, active vouchers, expiry timers, and redeemed coupon archive.',
+          icon: 'mobile',
+          title: 'Points Redemption',
+          description: 'Exchange accumulated points for food choose what you want to redeem and confirm the coupon.',
+          src: 'pinup-pic3.webp',
+        },
+        {
+          type: 'mobile-mockup',
+          icon: 'mobile',
+          title: 'Points Summary',
+          description: 'Total points overview how much you\'ve earned in total and the breakdown by which games they came from.',
+          src: 'pinup-pic4.webp',
         },
       ],
       quote: 'Demonstrated how gamification and strategic software design directly influence user engagement and real-world consumer behaviour.',
     },
 
     /* ────────────────────────────────────────────────
-       05 · Coworking Seat Reservation
+       05 · Ozone (Coworking)
     ──────────────────────────────────────────────── */
     {
       slug: 'coworking',
-      shortTitle: 'Coworking Reservation',
-      title: 'Interactive Coworking Space Seat Reservation System',
-      role: 'Frontend Developer · Angular',
-      tagline: 'Interactive visual floorplan reservation system streamlining workspace management and seating logistics.',
+      shortTitle: 'Ozone',
+      title: 'Ozone',
+      role: 'Web Developer · Angular',
+      tagline: 'View the office map, check availability, and reserve a seat no admin needed. A full admin layer underneath handles the rest.',
       gradientFrom: '#3B82F6',
       gradientTo: '#60A5FA',
-      icon: 'seat',
-      tags: ['Angular', 'TypeScript', 'JavaScript', 'HTML5 Canvas', 'SVG'],
-      overview: `An intuitive web application built for a coworking hub, allowing members to inspect a live 2D map of the workspace, check seat availability in real time, and reserve desks directly without any administrative intervention. The interactive floorplan renders workspace geometry via SVG, with colour-coded seat states (available, reserved, unavailable) updating in real time. Users simply click a seat, confirm their booking details, and receive instant confirmation — eliminating manual reservation workflows entirely.`,
+      icon: 'meeting_room',
+      tags: ['Angular', 'TypeScript', 'JavaScript', 'SVG'],
+      overview: `A web app for booking coworking seats view the office map, check availability, reserve a seat for a date, no admin needed. Underneath the simple booking screen, there's a full admin side too. First professional project, delivered at SRC.`,
       metrics: [
-        { value: 'Real-Time', label: 'Seat availability status syncing', accent: true },
+        { value: 'Real-Time', label: 'Seat availability on the map', accent: true },
         { value: 'Zero Admin', label: 'Self-service reservation workflow', accent: true },
-        { value: 'SVG-Based', label: 'Interactive 2D spatial floorplan' },
       ],
       technicalFramework: [
         {
-          label: 'Frontend Stack',
+          label: 'Booking Interface',
           items: [
-            'Angular & TypeScript — component-driven SPA architecture',
-            'HTML5 Canvas / SVG rendering — interactive floorplan visualisation',
-            'JavaScript animations — seat selection transitions and state feedback',
-            'Reactive Forms — booking validation and confirmation flow',
+            'Angular & TypeScript component-driven SPA architecture',
+            'SVG rendering interactive floorplan with colour-coded seat states (available, reserved, blocked)',
+            'Real-time seat state updates without page reload',
           ],
         },
         {
-          label: 'UI/UX Design',
+          label: 'Admin Layer',
           items: [
-            'Interactive Spatial Mapping — click-to-select seat interaction model',
-            'Colour-coded seat states — available (green), reserved (amber), blocked (grey)',
-            'Real-time status syncing — live seat state updates without page reload',
-            'Responsive layout — functional across desktop and tablet viewports',
+            'User management and seat inventory configuration',
+            'Team-based pricing rules and discount code creation',
+            'Less visible than the booking flow the more complex half of the project',
           ],
         },
       ],
       assets: [
         {
-          type: 'video',
-          icon: 'play',
-          title: 'Reservation Flow Demo',
-          description: 'Screen recording showing a user selecting a desk on the interactive SVG map, viewing seat details, and confirming a real-time reservation with instant feedback.',
-        },
-        {
           type: 'desktop-mockup',
           icon: 'desktop',
-          title: 'Interactive Floorplan',
-          description: 'Full-screen layout of the interactive visual floorplan of the coworking space, showing colour-coded seat availability across multiple workspace zones.',
+          title: 'Admin Panel',
+          description: 'Admin dashboard managing users, seat inventory, team-based pricing tiers, and discount code configuration. The less visible but more complex half of the project.',
+          src: 'ozone-admin.webp',
+        },
+        {
+          type: 'scrollable-desktop',
+          icon: 'desktop',
+          title: 'Booking Interface',
+          description: 'The user-facing booking screen interactive SVG floorplan with colour-coded seat availability. Scroll to see the full page from the seat map down to the reservation confirmation.',
+          src: 'ozone-user.webp',
         },
       ],
       quote: 'An early milestone in my transition to professional frontend development, demonstrating how software directly eliminates operational friction.',
+      links: [
+        { type: 'website', url: 'https://ozonecowork.ir/', label: 'ozonecowork.ir' },
+      ],
     },
 
     /* ────────────────────────────────────────────────
-       06 · Pollett (kept for completeness)
+       06 · Pollett
     ──────────────────────────────────────────────── */
     {
       slug: 'pollett',
       shortTitle: 'Pollett',
-      title: 'Pollett — Community Social Polling Platform',
-      role: 'Mobile Application Developer · Flutter',
-      tagline: 'Community-driven social platform where users create polls, interact, and connect around shared interests.',
+      title: 'Pollett',
+      role: 'Mobile & AI Integration Engineer · Flutter',
+      tagline: 'Community polls organised by shared interests, with tiered identity verification and an AI track added later.',
       gradientFrom: '#10B981',
       gradientTo: '#34D399',
-      icon: 'poll',
-      tags: ['Flutter', 'Dart', 'REST API'],
-      overview: `Pollett is a social platform centred on community-driven polling. Users create and share polls, react with likes, reply with comments, and discover communities built around shared topics. The feed algorithm surfaces contextually relevant polls, and community moderators can curate and pin content. The result is a lightweight, high-engagement social experience built entirely in Flutter with a stateless REST API backend.`,
+      icon: 'how_to_vote',
+      tags: ['Flutter', 'Dart', 'REST API', 'TensorFlow Lite', 'PyTorch'],
+      overview: `Pollett lets users create and vote on polls, organized by shared interests, with privacy controls and a tiered verification system. Later extended with an AI-focused track: an on-device face-verification feature and an in-app assistant. Available on Google Play.`,
       metrics: [
-        { value: 'Community', label: 'Interest-based group discovery', accent: true },
-        { value: 'Real-Time', label: 'Live vote counts & reactions', accent: false },
+        { value: 'Google Play', label: 'Published', accent: true },
+        { value: 'AI Role', label: 'Feb 2025 – Present', accent: false },
       ],
       technicalFramework: [
         {
-          label: 'Mobile Application',
+          label: 'Core App',
           items: [
-            'Flutter & Dart — performant cross-platform mobile app',
-            'Custom poll UI components — animated vote bars and reaction overlays',
-            'Infinite scroll feed — paginated content with lazy loading',
-            'State management — Provider pattern for reactive UI updates',
+            'Flutter & Dart cross-platform mobile app',
+            'Tiered account system: standard access, or verified "Alpha" status using face recognition prevents double-voting',
+            'Public/private visibility, signed or secret voting, anonymous creator option',
+            'Real-time vote counts verified identities enforce one-vote-per-user on secured polls',
           ],
         },
         {
-          label: 'Backend Integration',
+          label: 'AI Extension',
           items: [
-            'RESTful APIs — polls, votes, comments, community membership',
-            'Real-time vote count updates via polling or WebSocket',
-            'Content moderation hooks — flagging and reporting workflows',
-            'Community feed personalisation — interest-based content filtering',
+            '"Pollett Liveness" face-authentication feature built with TensorFlow Lite for on-device inference',
+            '"Polly" in-app AI assistant',
+            'This came through a separate AI-focused role alongside learning LLM integration and prompt engineering',
           ],
         },
       ],
@@ -478,95 +417,36 @@ export class ProjectsService {
         {
           type: 'mobile-mockup',
           icon: 'mobile',
-          title: 'Poll Feed',
-          description: 'Mobile mockup showing the main poll feed with animated vote bars, reaction counts, community tags, and the floating create-poll action button.',
-        },
-        {
-          type: 'mobile-mockup',
-          icon: 'chart',
-          title: 'Poll Results & Analytics',
-          description: 'Results screen showing real-time vote breakdown with animated pie chart, respondent count, and community engagement metrics.',
+          title: 'Home Screen',
+          description: 'The opening screen of Pollett entry point into the app showing the main feed and community structure.',
+          src: 'pollet-pic2.webp',
         },
         {
           type: 'mobile-mockup',
           icon: 'mobile',
-          title: 'Community Discovery',
-          description: 'Community discovery screen with interest-based group cards, follow/unfollow controls, trending topics, and member count indicators.',
+          title: 'Poll with Engagement',
+          description: 'A single poll in the feed showing vote options alongside like and comment interactions.',
+          src: 'pollet-pic1.webp',
+        },
+        {
+          type: 'mobile-mockup',
+          icon: 'chart',
+          title: 'Poll Results',
+          description: 'Real-time vote breakdown with respondent count and community engagement metrics.',
+        },
+        {
+          type: 'mobile-mockup',
+          icon: 'mobile',
+          title: 'Alpha Verification',
+          description: 'The face-scan verification flow for earning Alpha status.',
         },
       ],
-      quote: 'Built intuition for designing social interaction systems where simplicity of interface masks sophisticated real-time data architecture beneath.',
+      quote: 'Most of the earlier work predates the current AI wave; the AI came later, on purpose.',
+      links: [
+        { type: 'googleplay', url: 'https://play.google.com/store/apps/details?id=xyz.pollett.pollett&hl=en', label: 'Google Play' },
+      ],
     },
 
-    /* ────────────────────────────────────────────────
-       07 · Machine Learning Projects
-    ──────────────────────────────────────────────── */
-    {
-      slug: 'ml-projects',
-      shortTitle: 'ML Projects',
-      title: 'Machine Learning — Applied AI Projects Collection',
-      role: 'Machine Learning Engineer',
-      tagline: 'A collection of independent projects exploring data preparation, model training, and the application of AI to real-world problems.',
-      gradientFrom: '#EF4444',
-      gradientTo: '#F87171',
-      icon: 'ai',
-      tags: ['Python', 'scikit-learn', 'TensorFlow', 'Pandas', 'NumPy', 'Machine Learning', 'AI'],
-      overview: `A structured collection of independent machine learning projects spanning supervised learning, unsupervised clustering, neural network architecture, and applied AI. Each project follows a rigorous pipeline: raw data acquisition, cleaning and feature engineering, model selection and training, hyperparameter tuning, evaluation with cross-validation, and interpretability analysis. Projects address real-world domains including image classification, natural language processing, regression modelling, and anomaly detection.`,
-      metrics: [
-        { value: '7+', label: 'Independent ML projects completed', accent: true },
-        { value: 'End-to-End', label: 'Data pipeline to model deployment', accent: false },
-        { value: 'Multi-Domain', label: 'Vision · NLP · Regression · Anomaly Detection' },
-      ],
-      technicalFramework: [
-        {
-          label: 'Data Engineering',
-          items: [
-            'Python, Pandas, NumPy — data wrangling and transformation pipelines',
-            'Feature engineering — normalisation, encoding, dimensionality reduction (PCA)',
-            'Exploratory Data Analysis — statistical profiling and visualisation (Matplotlib, Seaborn)',
-            'Dataset management — train/val/test splits with stratified sampling',
-          ],
-        },
-        {
-          label: 'Model Training & Evaluation',
-          items: [
-            'scikit-learn — classical ML (SVM, Random Forest, k-NN, Logistic Regression)',
-            'TensorFlow / Keras — deep learning model design and training',
-            'Cross-validation, ROC-AUC, confusion matrices, F1 evaluation',
-            'Hyperparameter optimisation — Grid Search, Random Search, Bayesian methods',
-          ],
-        },
-        {
-          label: 'Applied AI',
-          items: [
-            'Convolutional Neural Networks — image classification pipelines',
-            'NLP preprocessing — tokenisation, embeddings, sentiment analysis',
-            'Anomaly detection — isolation forests and autoencoder-based approaches',
-            'Model interpretability — SHAP values and feature importance analysis',
-          ],
-        },
-      ],
-      assets: [
-        {
-          type: 'diagram',
-          icon: 'sitemap',
-          title: 'ML Pipeline Architecture',
-          description: 'End-to-end ML pipeline diagram from raw data ingestion through feature engineering, model training, evaluation, and inference output.',
-        },
-        {
-          type: 'desktop-mockup',
-          icon: 'chart',
-          title: 'Model Evaluation Dashboard',
-          description: 'Jupyter Notebook / dashboard view showing training/validation loss curves, confusion matrix, ROC curve, and feature importance rankings.',
-        },
-        {
-          type: 'photo',
-          icon: 'camera',
-          title: 'Project Portfolio Overview',
-          description: 'Visual summary card of all completed ML projects — domain, algorithm family, dataset size, and key evaluation metric per project.',
-        },
-      ],
-      quote: 'Working through the full ML lifecycle — from messy data to evaluated model — gave me a rigorous, engineering-first approach to artificial intelligence.',
-    },
 
   ];
 

@@ -7,7 +7,7 @@
       The Architectural <span class="stack__title-accent">Stack</span>
     </h2>
     <p class="stack__subtitle">
-      From robotics competitions to production apps — my journey across different tech domains.
+      From robotics competitions to production apps the tools that have shown up consistently across the work.
     </p>
   </div>
 
@@ -22,7 +22,9 @@
       <div class="stack-card__glow"></div>
       <div class="stack-card__inner">
         <div class="stack-card__head">
-          <div class="stack-card__icon" [style.background]="cards[0].iconBg">{{ cards[0].icon }}</div>
+          <div class="stack-card__icon" [style.background]="cards[0].iconBg">
+            <span class="mat-icon" [style.color]="cards[0].accentColor">{{ cards[0].icon }}</span>
+          </div>
           <div class="stack-card__head-text">
             <div class="stack-card__domain-row">
               <span class="stack-card__domain" [style.color]="cards[0].accentColor"
@@ -75,7 +77,9 @@
         <div class="stack-card__glow"></div>
         <div class="stack-card__inner">
           <div class="stack-card__head stack-card__head--compact">
-            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">{{ card.icon }}</div>
+            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">
+              <span class="mat-icon" [style.color]="card.accentColor">{{ card.icon }}</span>
+            </div>
             <div>
               <span class="stack-card__domain" [style.color]="card.accentColor"
                     [style.background]="card.accentColor + '14'"
@@ -125,7 +129,9 @@
         <div class="stack-card__glow"></div>
         <div class="stack-card__inner">
           <div class="stack-card__head stack-card__head--compact">
-            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">{{ card.icon }}</div>
+            <div class="stack-card__icon stack-card__icon--sm" [style.background]="card.iconBg">
+              <span class="mat-icon" [style.color]="card.accentColor">{{ card.icon }}</span>
+            </div>
             <div>
               <span class="stack-card__domain" [style.color]="card.accentColor"
                     [style.background]="card.accentColor + '14'"

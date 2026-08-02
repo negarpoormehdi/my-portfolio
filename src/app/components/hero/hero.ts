@@ -35,8 +35,8 @@ export class HeroComponent implements OnInit, OnDestroy {
   private readonly names = [
     'Negar Poormehdi',
     'a Flutter Developer',
-    'a Web Architect',
-    'a Creative Builder',
+    'an Angular Developer',
+    'an Engineering Builder',
   ];
   private nameIndex  = 0;
   private charIndex  = 0;
@@ -50,7 +50,7 @@ export class HeroComponent implements OnInit, OnDestroy {
 
   skills = [
     'Flutter', 'Angular', 'Dart', 'TypeScript',
-    'Firebase', 'REST API', 'Git', 'Kotlin',
+    'Firebase', 'REST API', 'Git','Python',
   ];
 
   // ── Lifecycle ────────────────────────────────────────────

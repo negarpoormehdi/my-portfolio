@@ -9,7 +9,9 @@
     <p class="jmap__hint">
       Move your cursor to navigate &nbsp;·&nbsp;
       <span *ngIf="!allVisited">Visit all <strong>{{ stations.length }}</strong> stations</span>
-      <span *ngIf="allVisited" class="jmap__hint--done">✦ All stations visited!</span>
+      <span *ngIf="allVisited" class="jmap__hint--done">
+        <span class="mat-icon" style="font-size:0.85rem;vertical-align:middle">check_circle</span> All stations visited!
+      </span>
     </p>
   </div>
 
@@ -48,7 +50,9 @@
          [style.left.%]="s.x"
          [style.top.%]="s.y">
       <div class="jmap__platform" [style.--accent]="s.color">
-        <div class="jmap__platform-icon" [style.background]="s.accentColor">{{ s.icon }}</div>
+        <div class="jmap__platform-icon" [style.background]="s.accentColor">
+          <span class="mat-icon" [style.color]="s.color" style="font-size:1.3rem">{{ s.icon }}</span>
+        </div>
         <span class="jmap__platform-label" [style.color]="s.color">{{ s.label }}</span>
         <span class="jmap__platform-year">{{ s.year }}</span>
         <div class="jmap__visited-ring" *ngIf="isVisited(s.id)">
@@ -121,7 +125,7 @@
 
     <!-- HUD -->
     <div class="jmap__hud">
-      <span class="jmap__hud-icon">◈</span>
+      <span class="mat-icon jmap__hud-icon">explore</span>
       <span class="jmap__hud-text">{{ visitedIds().size }} / {{ stations.length }} explored</span>
       <div class="jmap__hud-dots">
         <span *ngFor="let s of stations" class="jmap__hud-dot"
@@ -141,14 +145,16 @@
 
     <!-- Empty state -->
     <div class="jmap__info-empty" *ngIf="!activeStation()">
-      <span class="jmap__info-empty-icon">🗺</span>
+      <span class="mat-icon jmap__info-empty-icon">map</span>
       Move your cursor over a station to explore the story
     </div>
 
     <!-- Active station content -->
     <div class="jmap__info-content" *ngIf="activeStation() as s">
       <div class="jmap__info-icon-col">
-        <div class="jmap__info-icon" [style.background]="s.accentColor">{{ s.icon }}</div>
+        <div class="jmap__info-icon" [style.background]="s.accentColor">
+          <span class="mat-icon" [style.color]="s.color" style="font-size:1.8rem">{{ s.icon }}</span>
+        </div>
         <span class="jmap__info-year-badge">{{ s.year }}</span>
       </div>
       <div class="jmap__info-body">

@@ -379,9 +379,11 @@
   }
 
   &__hud-icon {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     color: $color-primary;
     opacity: 0.6;
+    line-height: 1;
+    vertical-align: middle;
   }
 
   &__hud-text {

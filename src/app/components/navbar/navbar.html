@@ -10,8 +10,7 @@
         <a
           [routerLink]="link.route"
           [fragment]="link.fragment"
-          routerLinkActive="navbar__link--active"
-          [routerLinkActiveOptions]="{ exact: link.route === '/' }"
+          [class.navbar__link--active]="isActive(link)"
           class="navbar__link"
         >{{ link.label }}</a>
       </li>
@@ -50,7 +49,29 @@
         </svg>
       </button>
 
-      <button class="navbar__cta">Resume</button>
+      <!-- Download CV -->
+      <a
+        href="/negarpoormehdiCV.pdf"
+        download="Negar_Poormehdi_CV.pdf"
+        class="navbar__cta navbar__cta--ghost"
+        title="Download CV"
+        aria-label="Download CV"
+      >
+        <span class="mat-icon navbar__cta-icon">description</span>
+        <span class="navbar__cta-label">CV</span>
+      </a>
+
+      <!-- Download Portfolio -->
+      <a
+        href="/negar-poormehdi-portfolio.pdf"
+        download="Negar_Poormehdi_Portfolio.pdf"
+        class="navbar__cta navbar__cta--filled"
+        title="Download Portfolio"
+        aria-label="Download Portfolio"
+      >
+        <span class="mat-icon navbar__cta-icon">download</span>
+        <span class="navbar__cta-label">Portfolio</span>
+      </a>
     </div>
 
   </div>

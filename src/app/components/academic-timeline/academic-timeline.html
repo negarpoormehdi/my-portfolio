@@ -4,17 +4,16 @@
   <div class="atl__header">
     <span class="atl__pre-label">CAREER NARRATIVE</span>
     <h2 class="atl__title">
-      From <span class="atl__accent">Engineering</span> to
-      <span class="atl__accent2">Intelligence</span>
+      From <span class="atl__accent">Biology</span> to
+      <span class="atl__accent2">Code</span>
     </h2>
     <p class="atl__subtitle">
-      A technical journey across biomedical engineering, competitive robotics,
-      professional software development, and machine learning — converging toward
-      intelligent systems.
+      From anatomy textbooks to robot arms to late nights untangling Flutter bugs.
+      Not the path I expected going in, but each part led somewhere useful.
     </p>
     <!-- Journey arc -->
     <div class="atl__arc">
-      <span *ngFor="let node of ['Problem Solving','Biomedical Eng.','Robotics','Programming','Software Eng.','Mobile & Web','Machine Learning','AI']; let last = last"
+      <span *ngFor="let node of ['Biomedical Eng.','Robotics & AI','Angular & JS','Flutter & Mobile','ML / LLMs','Master\'s Goal']; let last = last"
             class="atl__arc-node">
         {{ node }}<span *ngIf="!last" class="atl__arc-arrow">→</span>
       </span>
@@ -79,7 +78,7 @@
             [style.border-color]="tag.type === 'achievement' ? entry.categoryColor + '66' : ''"
             [style.color]="tag.type === 'achievement' ? entry.categoryColor : ''"
           >
-            <span *ngIf="tag.type === 'achievement'">✦ </span>{{ tag.label }}
+            <span *ngIf="tag.type === 'achievement'" class="mat-icon atl__achievement-icon" [style.color]="entry.categoryColor">workspace_premium</span>{{ tag.label }}
           </span>
         </div>
 
@@ -123,14 +122,16 @@
   <div class="atl__closing">
     <div class="atl__closing-line"></div>
     <p class="atl__closing-quote">
-      "From solving engineering problems to building intelligent software systems."
+      "Applying for a Master's in AI, Software Engineering, or Intelligent Systems at FEUP, University of Porto."
     </p>
-    <p class="atl__closing-name">Negar Pourmahdi · Born November 28, 2000</p>
+    <p class="atl__closing-name">Negar Poormehdi</p>
   </div>
 
   <!-- Lightbox -->
   <div *ngIf="lightboxImage()" class="atl__lightbox" (click)="closeLightbox()">
-    <button class="atl__lightbox-close" (click)="closeLightbox()">✕</button>
+    <button class="atl__lightbox-close" (click)="closeLightbox()">
+      <span class="mat-icon">close</span>
+    </button>
     <img [src]="lightboxImage()" alt="Preview" class="atl__lightbox-img" (click)="$event.stopPropagation()">
   </div>
 

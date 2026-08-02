@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar';
 import { FooterComponent } from '../../components/footer/footer';
-import { ProjectsService, CaseStudy } from '../../services/projects.service';
+import { ProjectsService, CaseStudy, Asset } from '../../services/projects.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -31,6 +31,15 @@ export class ProjectDetailComponent implements OnInit {
 
   otherProjects(currentSlug: string): CaseStudy[] {
     return this.svc.getOthers(currentSlug, 3);
+  }
+
+  /** Separate assets by frame type for grouped rendering */
+  mobileAssets(p: CaseStudy): Asset[] {
+    return p.assets.filter(a => a.type !== 'desktop-mockup' && a.type !== 'scrollable-desktop');
+  }
+
+  desktopAssets(p: CaseStudy): Asset[] {
+    return p.assets.filter(a => a.type === 'desktop-mockup' || a.type === 'scrollable-desktop');
   }
 
   /** Returns true if the asset src is a video file */

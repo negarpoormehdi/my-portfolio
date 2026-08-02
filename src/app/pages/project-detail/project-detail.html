@@ -118,56 +118,95 @@
             <h2 class="cs__section-title">Media & Showcase</h2>
           </div>
 
-          <div class="cs__assets-grid">
-            <article
-              class="cs__asset"
-              *ngFor="let asset of p.assets; let i = index"
-            >
-              <!-- phone-frame wrapper -->
+          <!-- Mobile grid -->
+          <div class="cs__assets-grid cs__assets-grid--mobile"
+               *ngIf="mobileAssets(p).length">
+            <article class="cs__asset"
+                     *ngFor="let asset of mobileAssets(p)">
               <div class="cs__asset-phone">
                 <div class="cs__asset-phone-bar"></div>
                 <div class="cs__asset-preview">
-                  <!-- Real media -->
-                  <ng-container *ngIf="asset.src; else placeholder">
-                    <video
-                      *ngIf="isVideo(asset.src!)"
-                      class="cs__asset-media"
-                      [src]="asset.src"
-                      controls
-                      playsinline
-                      preload="metadata"
-                      loop
-                    ></video>
-                    <img
-                      *ngIf="!isVideo(asset.src!)"
-                      class="cs__asset-media cs__asset-media--img"
-                      [src]="asset.src"
-                      [alt]="asset.title"
-                      loading="lazy"
-                    />
+                  <ng-container *ngIf="asset.src; else placeholderMobile">
+                    <video *ngIf="isVideo(asset.src!)" class="cs__asset-media"
+                      [src]="asset.src" controls playsinline preload="metadata" loop></video>
+                    <img *ngIf="!isVideo(asset.src!)" class="cs__asset-media cs__asset-media--img"
+                      [src]="asset.src" [alt]="asset.title" loading="lazy"/>
                   </ng-container>
-                  <!-- Placeholder -->
-                  <ng-template #placeholder>
+                  <ng-template #placeholderMobile>
                     <div class="cs__asset-glow"></div>
                     <ng-container [ngSwitch]="asset.icon">
                       <svg *ngSwitchCase="'play'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                      <svg *ngSwitchCase="'sitemap'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="5" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><line x1="6.5" y1="8" x2="6.5" y2="16"/><line x1="17.5" y1="8" x2="17.5" y2="16"/></svg>
-                      <svg *ngSwitchCase="'camera'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                       <svg *ngSwitchCase="'mobile'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
-                      <svg *ngSwitchCase="'desktop'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                      <svg *ngSwitchCase="'trophy'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
                       <svg *ngSwitchCase="'store'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>
                       <svg *ngSwitchCase="'wallet'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
                       <svg *ngSwitchCase="'chart'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                      <svg *ngSwitchCase="'trophy'" class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
                       <svg *ngSwitchDefault class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                     </ng-container>
                   </ng-template>
                 </div>
                 <div class="cs__asset-phone-home"></div>
               </div>
-
               <div class="cs__asset-body">
-                <span class="cs__asset-label">Asset {{ (i + 1) < 10 ? '0' + (i + 1) : i + 1 }} · {{ asset.title }}</span>
+                <span class="cs__asset-label">{{ asset.title }}</span>
+                <p class="cs__asset-desc">{{ asset.description }}</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Desktop / laptop grid -->
+          <div class="cs__assets-grid cs__assets-grid--desktop"
+               *ngIf="desktopAssets(p).length">
+            <article class="cs__asset cs__asset--desktop"
+                     *ngFor="let asset of desktopAssets(p)">
+              <div class="cs__asset-laptop">
+                <div class="cs__asset-laptop-screen">
+                  <div class="cs__asset-laptop-bar">
+                    <span class="cs__asset-laptop-dot"></span>
+                    <span class="cs__asset-laptop-dot"></span>
+                    <span class="cs__asset-laptop-dot"></span>
+                  </div>
+
+                  <!-- Scrollable variant -->
+                  <ng-container *ngIf="asset.type === 'scrollable-desktop'">
+                    <div class="cs__asset-preview cs__asset-preview--laptop cs__asset-preview--scroll">
+                      <img *ngIf="asset.src"
+                           class="cs__asset-media--scroll"
+                           [src]="asset.src" [alt]="asset.title" loading="lazy"/>
+                      <div class="cs__asset-scroll-hint">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                          <line x1="12" y1="5" x2="12" y2="19"/>
+                          <polyline points="19 12 12 19 5 12"/>
+                        </svg>
+                        scroll
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <!-- Normal desktop variant -->
+                  <ng-container *ngIf="asset.type !== 'scrollable-desktop'">
+                    <div class="cs__asset-preview cs__asset-preview--laptop">
+                      <ng-container *ngIf="asset.src; else placeholderDesktop">
+                        <video *ngIf="isVideo(asset.src!)" class="cs__asset-media"
+                          [src]="asset.src" controls playsinline preload="metadata" loop></video>
+                        <img *ngIf="!isVideo(asset.src!)" class="cs__asset-media cs__asset-media--img"
+                          [src]="asset.src" [alt]="asset.title" loading="lazy"/>
+                      </ng-container>
+                      <ng-template #placeholderDesktop>
+                        <div class="cs__asset-glow"></div>
+                        <svg class="cs__asset-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                      </ng-template>
+                    </div>
+                  </ng-container>
+
+                </div>
+                <div class="cs__asset-laptop-base">
+                  <div class="cs__asset-laptop-notch"></div>
+                </div>
+              </div>
+              <div class="cs__asset-body">
+                <span class="cs__asset-label">{{ asset.title }}</span>
                 <p class="cs__asset-desc">{{ asset.description }}</p>
               </div>
             </article>
@@ -179,6 +218,53 @@
           <div class="cs__quote">
             <svg class="cs__quote-mark" viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h4v4H9c0 2 1 3 3 3v2c-3 0-5-2-5-5V7zm8 0h4v4h-2c0 2 1 3 3 3v2c-3 0-5-2-5-5V7z"/></svg>
             <p class="cs__quote-text">{{ p.quote }}</p>
+          </div>
+        </section>
+
+        <!-- Live Links (conditional) -->
+        <section class="cs__section cs__live-section" *ngIf="p.links?.length">
+          <div class="cs__section-head">
+            <span class="cs__eyebrow">Live</span>
+            <h2 class="cs__section-title">Try It Out</h2>
+          </div>
+          <div class="cs__live-links">
+
+            <a *ngFor="let link of p.links"
+               [href]="link.url"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cs__live-btn"
+               [class.cs__live-btn--appstore]="link.type === 'appstore'"
+               [class.cs__live-btn--googleplay]="link.type === 'googleplay'"
+               [class.cs__live-btn--website]="link.type === 'website'">
+
+              <!-- App Store icon -->
+              <svg *ngIf="link.type === 'appstore'" class="cs__live-btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+
+              <!-- Google Play icon -->
+              <svg *ngIf="link.type === 'googleplay'" class="cs__live-btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.18 23.76c.3.17.64.22.97.15l11.49-11.49-3.24-3.24L3.18 23.76zm16.4-10.02L16.4 12l3.18-1.74-3.22-5.57-3.1 1.69L3.9.53C3.56.34 3.17.3 2.8.46 2.43.61 2.18.94 2.1 1.33L2 1.82v20.35l.1.49c.08.39.33.72.7.87.37.16.76.12 1.1-.07l9.49-5.18 3.24 3.23 3.22-1.74c.59-.32.96-.94.96-1.6 0-.67-.37-1.28-.96-1.6l-.27-.83z"/>
+              </svg>
+
+              <!-- Website icon -->
+              <svg *ngIf="link.type === 'website'" class="cs__live-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+
+              <span class="cs__live-btn-label">{{ link.label }}</span>
+
+              <!-- external arrow -->
+              <svg class="cs__live-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+
           </div>
         </section>
 
@@ -200,7 +286,13 @@
               <div class="cs__more-body">
                 <span class="cs__more-role">{{ other.role }}</span>
                 <h3 class="cs__more-title">{{ other.shortTitle }}</h3>
-                <span class="cs__more-arrow">→</span>
+                <span class="cs__more-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                       width="16" height="16">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
               </div>
             </a>
           </div>
@@ -221,7 +313,13 @@
       <div class="cs__wrap">
         <div style="padding: 200px 0; text-align: center;">
           <h2 style="margin-bottom: 16px;">Case Study not found</h2>
-          <a routerLink="/projects" style="color: var(--color-primary);">← Back to all projects</a>
+          <a routerLink="/projects" style="color: var(--color-primary); display:inline-flex; align-items:center; gap:6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Back to all projects
+          </a>
         </div>
       </div>
     </main>
