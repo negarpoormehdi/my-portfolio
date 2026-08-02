@@ -121,6 +121,7 @@ export class AcademicTimelineComponent implements AfterViewInit, OnDestroy {
         'Admin layer: users, seat inventory, team pricing, discount codes',
         'Seat map visualisation with real-time availability via SVG',
       ],
+      images: ['/src-team.webp'],
       side: 'right',
     },
     {
