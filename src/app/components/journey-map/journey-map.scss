@@ -110,7 +110,7 @@
 
   &__info-icon-col {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: $space-2;
     flex-shrink: 0;
@@ -469,6 +469,12 @@
       padding: $space-4;
     }
 
+    &__info-icon-col {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-2;
+    }
+
     &__info-icon {
       width: 44px;
       height: 44px;
@@ -556,9 +562,9 @@
     }
 
     &__info-icon-col {
-      flex-direction: row;
-      gap: $space-3;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-2;
     }
 
     &__info-icon {
