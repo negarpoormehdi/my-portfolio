@@ -91,7 +91,7 @@ export class StackComponent implements AfterViewInit, OnDestroy {
       iconBg: 'rgba(52,211,153,0.12)',
       accentColor: '#34D399',
       headline: 'Autonomous Robotics',
-      description: '1st Place IranOpen 2022 & 2018 · 3rd Place RoboCup Asia-Pacific 2021',
+      description: '1st Place IranOpen 2022 & 2020 & 2018 · 3rd Place RoboCup Asia-Pacific 2021 ',
       skills: [
         { name: 'ROS', level: 'proficient' },
         { name: 'Python', level: 'proficient' },

@@ -183,7 +183,7 @@ export class AcademicTimelineComponent implements AfterViewInit, OnDestroy {
       shortTitle: 'Master\'s Application FEUP Porto',
       category: 'Academic Goal',
       categoryColor: '#6D5EF7',
-      headline: 'Applying for a Master\'s in AI, Software Engineering, or Intelligent Systems',
+      headline: 'Applying for a Master\'s in Software Engineering',
       description:
         'Applying for a Master\'s at FEUP, University of Porto to strengthen programming knowledge and return to an academic environment, something I\'ve wanted for a while after progressing professionally without it.',
       tags: [
