@@ -34,9 +34,9 @@ export class HeroComponent implements OnInit, OnDestroy {
   // ── Typing animation ─────────────────────────────────────
   private readonly names = [
     'Negar Poormehdi',
-    'a Flutter Developer',
-    'an Angular Developer',
-    'an Engineering Builder',
+    'a Mobile Developer',
+    'a Web Developer',
+    'an Engineer',
   ];
   private nameIndex  = 0;
   private charIndex  = 0;

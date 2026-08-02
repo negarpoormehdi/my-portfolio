@@ -52,7 +52,6 @@ export interface CaseStudy {
   pipeline?: PipelineStep[];
   features?: Feature[];
   assets: Asset[];
-  quote: string;
   links?: ProjectLink[];
 }
 
@@ -141,7 +140,6 @@ export class ProjectsService {
           src: 'akssi-pic3.webp',
         },
       ],
-      quote: 'This is where the "build it myself when the package doesn\'t fit" habit shows up the most four separate features, each built from scratch.',
       links: [
         { type: 'appstore',   url: 'https://apps.apple.com/us/app/akssi/id6744976534', label: 'App Store' },
         { type: 'googleplay', url: 'https://play.google.com/store/apps/details?id=com.budstechnology.akssing&hl=en', label: 'Google Play' },
@@ -246,7 +244,6 @@ export class ProjectsService {
 
 
       ],
-      quote: 'The most complete dual-platform project here where both sides of the product had to hold their own.',
     },
 
     /* ────────────────────────────────────────────────
@@ -315,7 +312,6 @@ export class ProjectsService {
           src: 'pinup-pic4.webp',
         },
       ],
-      quote: 'Demonstrated how gamification and strategic software design directly influence user engagement and real-world consumer behaviour.',
     },
 
     /* ────────────────────────────────────────────────
@@ -370,7 +366,6 @@ export class ProjectsService {
           src: 'ozone-user.webp',
         },
       ],
-      quote: 'An early milestone in my transition to professional frontend development, demonstrating how software directly eliminates operational friction.',
       links: [
         { type: 'website', url: 'https://ozonecowork.ir/', label: 'ozonecowork.ir' },
       ],
@@ -441,7 +436,6 @@ export class ProjectsService {
           description: 'The face-scan verification flow for earning Alpha status.',
         },
       ],
-      quote: 'Most of the earlier work predates the current AI wave; the AI came later, on purpose.',
       links: [
         { type: 'googleplay', url: 'https://play.google.com/store/apps/details?id=xyz.pollett.pollett&hl=en', label: 'Google Play' },
       ],
