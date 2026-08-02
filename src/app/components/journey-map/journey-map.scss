@@ -453,3 +453,146 @@
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+// ─────────────────────────────────────────
+// Responsive — Tablet & Mobile
+// ─────────────────────────────────────────
+
+// Tablet (≤ 900px)
+@media (max-width: 900px) {
+  .jmap {
+    &__canvas {
+      height: 300px;
+    }
+
+    &__info-panel {
+      padding: $space-4;
+    }
+
+    &__info-icon {
+      width: 44px;
+      height: 44px;
+      font-size: 1.4rem;
+    }
+
+    &__info-role {
+      font-size: $text-base;
+    }
+
+    &__info-story {
+      font-size: $text-xs;
+      line-height: 1.65;
+    }
+  }
+}
+
+// Mobile (≤ 600px)
+@media (max-width: 600px) {
+  .jmap {
+    &__topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $space-2;
+      margin-bottom: $space-3;
+    }
+
+    &__canvas {
+      height: 240px;
+      border-radius: $radius-lg $radius-lg 0 0;
+      cursor: default; // no custom cursor on touch
+    }
+
+    // Hide keyboard hint on touch devices
+    &__keyhint {
+      display: none;
+    }
+
+    // Shrink station platforms so they fit
+    &__platform {
+      padding: $space-2 $space-3;
+      min-width: 58px;
+    }
+
+    &__platform-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+    }
+
+    &__platform-label {
+      font-size: 0.52rem;
+    }
+
+    &__platform-year {
+      display: none;
+    }
+
+    // Character smaller
+    &__char-svg {
+      width: 32px;
+    }
+
+    &__char-name {
+      font-size: 0.48rem;
+    }
+
+    // HUD compact
+    &__hud {
+      bottom: $space-2;
+      left: $space-3;
+      gap: $space-1;
+    }
+
+    &__hud-text {
+      font-size: 0.55rem;
+    }
+
+    // Info panel stacks vertically
+    &__info-panel {
+      flex-direction: column;
+      padding: $space-4;
+      gap: $space-3;
+      min-height: auto;
+    }
+
+    &__info-icon-col {
+      flex-direction: row;
+      gap: $space-3;
+      align-items: center;
+    }
+
+    &__info-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1.3rem;
+    }
+
+    &__info-role {
+      font-size: $text-sm;
+      margin-bottom: 0;
+    }
+
+    &__info-place {
+      margin-bottom: $space-2;
+    }
+
+    &__info-story {
+      font-size: $text-xs;
+      line-height: 1.6;
+      margin-bottom: $space-2;
+    }
+
+    &__info-skills {
+      gap: $space-1;
+    }
+
+    &__info-skill {
+      font-size: 0.58rem;
+      padding: 2px 8px;
+    }
+
+    &__hint {
+      font-size: 0.65rem;
+    }
+  }
+}

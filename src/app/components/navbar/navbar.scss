@@ -168,4 +168,118 @@
   &__cta-label {
     line-height: 1;
   }
+
+  // ── Hamburger button — mobile only ───
+  &__hamburger {
+    display: none;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-ghost-bg);
+    border: 1.5px solid var(--btn-ghost-border);
+    border-radius: $radius-full;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: background 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease, transform 0.15s ease;
+
+    .mat-icon { font-size: 1.2rem; line-height: 1; }
+
+    &:hover {
+      background: var(--btn-ghost-hover);
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+
+  // ── Mobile drawer ────────────────────
+  &__drawer {
+    display: none;
+    flex-direction: column;
+    gap: $space-6;
+    padding: $space-6 $space-8 $space-8;
+    background: var(--nav-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--nav-border);
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    position: relative;
+    z-index: 101;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                padding 0.35s ease;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &--open {
+      max-height: 480px;
+      opacity: 1;
+      padding-top: $space-6;
+      padding-bottom: $space-8;
+    }
+  }
+
+  &__drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__drawer-link {
+    display: block;
+    font-family: $font-body;
+    font-size: $text-lg;
+    font-weight: $weight-medium;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: $space-3 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+
+    &:hover, &--active {
+      color: $color-primary;
+      padding-left: $space-2;
+    }
+  }
+
+  &__drawer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    .navbar__cta {
+      justify-content: center;
+      padding: $space-3 $space-6;
+      font-size: $text-base;
+    }
+  }
+
+  // ── Backdrop ─────────────────────────
+  &__backdrop {
+    display: none;
+    position: fixed;
+    inset: 64px 0 0 0;
+    background: rgba(0, 0, 0, 0);
+    z-index: 99;
+    pointer-events: none;
+    transition: background 0.3s ease;
+
+    &--visible {
+      pointer-events: all;
+      background: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  // ── Responsive breakpoints ───────────
+  @media (max-width: 768px) {
+    &__links        { display: none; }
+    &__cta--desktop { display: none; }
+    &__hamburger    { display: flex; }
+    &__drawer       { display: flex; }
+    &__backdrop     { display: block; }
+  }
 }

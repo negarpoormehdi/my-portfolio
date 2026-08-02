@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   router = inject(Router);
 
   currentUrl = '';
+  menuOpen   = signal(false);
   private sub!: Subscription;
 
   navLinks: NavLink[] = [
@@ -37,6 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
         this.currentUrl = e.urlAfterRedirects;
+        this.menuOpen.set(false);
       });
   }
 
@@ -44,16 +46,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
+  toggleMenu(): void {
+    this.menuOpen.update(v => !v);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void {
+    this.menuOpen.set(false);
+  }
+
   isActive(link: NavLink): boolean {
-    if (link.fragment) {
-      // fragment links are never "active" they're just scroll anchors
-      return false;
-    }
+    if (link.fragment) return false;
     if (link.route === '/') {
-      // Home is active only when exactly on '/' (no sub-routes)
       return this.currentUrl === '/' || this.currentUrl === '';
     }
-    // Other routes (e.g. /projects) active when URL starts with the route
     return this.currentUrl.startsWith(link.route);
   }
 }

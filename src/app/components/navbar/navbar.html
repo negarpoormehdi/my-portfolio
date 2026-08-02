@@ -2,9 +2,9 @@
   <div class="navbar__container">
 
     <!-- Logo -->
-    <a routerLink="/" class="navbar__logo">Negar Poormehdi's Portfolio</a>
+    <a routerLink="/" class="navbar__logo" (click)="closeMenu()">Negar's Portfolio</a>
 
-    <!-- Nav links -->
+    <!-- Nav links (desktop) -->
     <ul class="navbar__links">
       <li *ngFor="let link of navLinks">
         <a
@@ -16,17 +16,16 @@
       </li>
     </ul>
 
-    <!-- Right side: theme toggle + CTA -->
+    <!-- Right side: theme toggle + CTA (desktop) + hamburger (mobile) -->
     <div class="navbar__actions">
 
-      <!-- Dark / Light toggle -->
+      <!-- Dark / Light toggle — always visible -->
       <button
         class="navbar__theme-btn"
         (click)="theme.toggle()"
         [attr.aria-label]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
         [title]="theme.theme() === 'dark' ? 'Light mode' : 'Dark mode'"
       >
-        <!-- Sun icon (shown in dark mode → click to go light) -->
         <svg *ngIf="theme.theme() === 'dark'"
           class="navbar__theme-icon" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -40,8 +39,6 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
-
-        <!-- Moon icon (shown in light mode → click to go dark) -->
         <svg *ngIf="theme.theme() === 'light'"
           class="navbar__theme-icon" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -49,11 +46,11 @@
         </svg>
       </button>
 
-      <!-- Download CV -->
+      <!-- Download buttons — hidden on mobile, shown in drawer instead -->
       <a
         href="/negarpoormehdiCV.pdf"
         download="Negar_Poormehdi_CV.pdf"
-        class="navbar__cta navbar__cta--ghost"
+        class="navbar__cta navbar__cta--ghost navbar__cta--desktop"
         title="Download CV"
         aria-label="Download CV"
       >
@@ -61,18 +58,71 @@
         <span class="navbar__cta-label">CV</span>
       </a>
 
-      <!-- Download Portfolio -->
       <a
         href="/negar-poormehdi-portfolio.pdf"
         download="Negar_Poormehdi_Portfolio.pdf"
-        class="navbar__cta navbar__cta--filled"
+        class="navbar__cta navbar__cta--filled navbar__cta--desktop"
         title="Download Portfolio"
         aria-label="Download Portfolio"
       >
         <span class="mat-icon navbar__cta-icon">download</span>
         <span class="navbar__cta-label">Portfolio</span>
       </a>
-    </div>
 
+      <!-- Hamburger — mobile only -->
+      <button
+        class="navbar__hamburger"
+        (click)="toggleMenu()"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+        [attr.aria-expanded]="menuOpen()"
+      >
+        <span class="mat-icon">{{ menuOpen() ? 'close' : 'menu' }}</span>
+      </button>
+
+    </div>
   </div>
+
+  <!-- Mobile drawer -->
+  <div class="navbar__drawer" [class.navbar__drawer--open]="menuOpen()">
+    <ul class="navbar__drawer-links">
+      <li *ngFor="let link of navLinks">
+        <a
+          [routerLink]="link.route"
+          [fragment]="link.fragment"
+          [class.navbar__drawer-link--active]="isActive(link)"
+          class="navbar__drawer-link"
+          (click)="closeMenu()"
+        >{{ link.label }}</a>
+      </li>
+    </ul>
+
+    <div class="navbar__drawer-actions">
+      <a
+        href="/negarpoormehdiCV.pdf"
+        download="Negar_Poormehdi_CV.pdf"
+        class="navbar__cta navbar__cta--ghost"
+        (click)="closeMenu()"
+      >
+        <span class="mat-icon navbar__cta-icon">description</span>
+        <span class="navbar__cta-label">Download CV</span>
+      </a>
+      <a
+        href="/negar-poormehdi-portfolio.pdf"
+        download="Negar_Poormehdi_Portfolio.pdf"
+        class="navbar__cta navbar__cta--filled"
+        (click)="closeMenu()"
+      >
+        <span class="mat-icon navbar__cta-icon">download</span>
+        <span class="navbar__cta-label">Download Portfolio</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Backdrop -->
+  <div
+    class="navbar__backdrop"
+    [class.navbar__backdrop--visible]="menuOpen()"
+    (click)="closeMenu()"
+  ></div>
+
 </nav>

@@ -27,6 +27,30 @@ export interface Station {
 
 interface Vec2 { x: number; y: number; }
 
+// Desktop positions (default)
+const POSITIONS_DESKTOP: Record<string, Vec2> = {
+  biomed: { x: 12, y: 58 },
+  mrl:    { x: 45, y: 32 },
+  pivot:  { x: 72, y: 62 },
+  dev:    { x: 88, y: 38 },
+};
+
+// Tablet positions (≤ 900px)
+const POSITIONS_TABLET: Record<string, Vec2> = {
+  biomed: { x: 12, y: 62 },
+  mrl:    { x: 40, y: 28 },
+  pivot:  { x: 65, y: 65 },
+  dev:    { x: 82, y: 32 },
+};
+
+// Mobile positions (≤ 600px) — dev moved left+up to avoid clipping
+const POSITIONS_MOBILE: Record<string, Vec2> = {
+  biomed: { x: 14, y: 65 },
+  mrl:    { x: 42, y: 28 },
+  pivot:  { x: 68, y: 68 },
+  dev:    { x: 76, y: 30 },
+};
+
 @Component({
   selector: 'app-journey-map',
   imports: [CommonModule],
@@ -37,10 +61,10 @@ export class JourneyMapComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLDivElement>;
 
-  charPos  = signal<Vec2>({ x: 8, y: 58 });
-  target   = signal<Vec2>({ x: 8, y: 58 });
-  moving   = signal(false);
-  facing   = signal<'left' | 'right'>('right');
+  charPos   = signal<Vec2>({ x: 8, y: 58 });
+  target    = signal<Vec2>({ x: 8, y: 58 });
+  moving    = signal(false);
+  facing    = signal<'left' | 'right'>('right');
   walkFrame = signal(0);
 
   activeStation = signal<Station | null>(null);
@@ -110,6 +134,8 @@ export class JourneyMapComponent implements AfterViewInit, OnDestroy {
   constructor(private zone: NgZone) {}
 
   ngAfterViewInit(): void {
+    this.applyResponsivePositions();
+
     this.walkTimer = setInterval(() => {
       if (this.moving()) this.walkFrame.update(f => (f + 1) % 4);
       else this.walkFrame.set(0);
@@ -134,8 +160,27 @@ export class JourneyMapComponent implements AfterViewInit, OnDestroy {
     clearInterval(this.trailTimer);
   }
 
+  @HostListener('window:resize')
+  onResize(): void {
+    this.applyResponsivePositions();
+  }
+
+  private applyResponsivePositions(): void {
+    const w = window.innerWidth;
+    const map = w <= 600 ? POSITIONS_MOBILE
+              : w <= 900 ? POSITIONS_TABLET
+              : POSITIONS_DESKTOP;
+
+    this.zone.run(() => {
+      this.stations = this.stations.map(s => ({
+        ...s,
+        x: map[s.id]?.x ?? s.x,
+        y: map[s.id]?.y ?? s.y,
+      }));
+    });
+  }
+
   onCanvasMove(e: MouseEvent): void {
-    // Throttle to ~60fps
     const now = Date.now();
     if (now - this.lastMouseTime < 16) return;
     this.lastMouseTime = now;
@@ -173,13 +218,11 @@ export class JourneyMapComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Ease-in speed based on distance
-    const speed = Math.min(0.08 + dist * 0.004, 0.22);
+    const speed  = Math.min(0.08 + dist * 0.004, 0.22);
     const newPos = { x: pos.x + dx * speed, y: pos.y + dy * speed };
 
     this.zone.run(() => {
       this.charPos.set(newPos);
-      // Add trail
       this.trail.update(t => [...t, { x: newPos.x, y: newPos.y }]);
       this.checkNearStation(newPos);
     });
@@ -214,7 +257,7 @@ export class JourneyMapComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   onKey(e: KeyboardEvent): void {
-    const arrows = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+    const arrows = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     if (!arrows.includes(e.key)) return;
     e.preventDefault();
     const pos = this.charPos();
